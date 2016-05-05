@@ -1,5 +1,6 @@
 <?php
-
+  /*
+    //TODO.
 namespace Securetrading\Stpp\JsonInterface\Tests\Integration;
 
 class CodeSnifferTest extends \Securetrading\Unittest\CodeSnifferTestAbstract {
@@ -8,3 +9,4 @@ class CodeSnifferTest extends \Securetrading\Unittest\CodeSnifferTestAbstract {
     return $stppJsonSrcDir;
   }
 }
+  */
