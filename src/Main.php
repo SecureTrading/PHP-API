@@ -7,7 +7,9 @@ class Main {
 
   public static function bootstrapIoc() {
     $ioc = \Securetrading\Ioc\Helper::instance()
-      ->loadPackage('stStppJson', \Securetrading\Loader\Loader::getRootPath())
+      ->addVendorDirs(\Securetrading\Loader\Loader::getRootPath())
+      ->addEtcDirs(realpath(__DIR__ . '/../etc'))
+      ->loadPackage('stStppJson')
       ->getIoc();
     
     return $ioc;
