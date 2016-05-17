@@ -138,6 +138,8 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     $this->_siteReference = $testConfig['siteReference'];
     $this->_username = $testConfig['username'];
     $this->_password = $testConfig['password'];
+    $this->_correctSslCertFile = $testConfig['correct_ssl_cert_file'] = $testConfig['correctSslCertFile'];
+    $this->_incorrectSslCertFile = $testConfig['incorrect_ssl_cert_file'] = $testConfig['incorrectSslCertFile'];
 
     self::$_defaultConfigArray['username'] = $this->_username;
     self::$_defaultConfigArray['password'] = $this->_password;
@@ -1344,7 +1346,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 
   public function providerSslVerification() {
     $this->_addDataSet(
-      realpath(__DIR__ . DIRECTORY_SEPARATOR . 'ca_test_files' . DIRECTORY_SEPARATOR . 'test_webservices_root.pem'),
+      $this->_correctSslCertFile,
       array(
         'responses' => array(
           array(
@@ -1356,7 +1358,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
       )
     );
     $this->_addDataSet(
-      realpath(__DIR__ . DIRECTORY_SEPARATOR . 'ca_test_files' . DIRECTORY_SEPARATOR . 'invalid_webservices_root.pem'),
+      $this->_incorrectSslCertFile,
       array(
         'responses' => array(
           array(
@@ -1371,4 +1373,3 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     return $this->_getDataSets();
   }
 }
-
