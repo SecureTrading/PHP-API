@@ -34,12 +34,10 @@ class Factory {
   public static function api(\Securetrading\Ioc\IocInterface $ioc, $alias, $params) {
     $configData = $params;
     $defaultConfig = array(
-      'json_interface' => array(
-        'datacenterurl' => 'https://webservices.securetrading.net',
-        'jsonversion' => '1.00',
-        'input_encoding' => 'iso8859-1',
-	'locale' => 'en_GB',
-      ),
+      'datacenterurl' => 'https://webservices.securetrading.net',
+      'jsonversion' => '1.00',
+      'input_encoding' => 'iso8859-1',
+      'locale' => 'en_GB',
     );
     $configData = array_replace_recursive($defaultConfig, $configData);
     $config = $ioc->get('\Securetrading\Config\Config', array($configData));
@@ -49,7 +47,7 @@ class Factory {
   public static function http(\Securetrading\Ioc\IocInterface $ioc, $alias, $params) {
     $config = $ioc->getParameter('config', $params);
     $httpClient = $ioc->get('\Securetrading\Http\Curl');
-    \Securetrading\Http\Facade::configureHttp($httpClient, 'connections/json_interface/', $config);
+    \Securetrading\Http\Facade::configureHttp($httpClient, '', $config);
     return new Http($httpClient);
   }
 

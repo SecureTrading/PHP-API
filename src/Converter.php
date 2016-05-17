@@ -33,8 +33,8 @@ class Converter {
     }
     
     $stRequest = array(
-      "alias" => $this->_config->get('connections/json_interface/username'),
-      "version" => $this->_config->get('json_interface/jsonversion'),
+      "alias" => $this->_config->get('username'),
+      "version" => $this->_config->get('jsonversion'),
       "request" => $requests,
       "libraryversion" => sprintf("php_%s", Main::FULL_VERSION),
     );

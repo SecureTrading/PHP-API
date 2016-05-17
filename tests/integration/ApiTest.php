@@ -16,27 +16,22 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
   private $_password;
 
   private static $_defaultConfigArray = array( // Note - commented out config does not need to be set - just documenting all the possible config options somewhere.
-    'connections' => array(
-      'json_interface' => array(
-	//'username' => '',
-        //'password' => '',
-	//'proxy_host' => '',
-	//'proxy_port' => '',
-	'ssl_verify_peer' => false,
-	'ssl_verify_host' => 0,
-	'ssl_cacertfile' => '',
-	//'connect_timeout' => '',
-	//'timeout' => '',
-	//'connect_attempts' => '',
-	//'sleep_useconds' => '',
-	//'curl_options' => array(),
-      ),
-    ),
-    'json_interface' => array(
-      //'datacenterurl' => '',
-      //'jsonversion' => '',
-      //'input_encoding' => '',
-    ),
+    //'username' => '',
+    //'password' => '',
+    //'proxy_host' => '',
+    //'proxy_port' => '',
+    'ssl_verify_peer' => false,
+    'ssl_verify_host' => 0,
+    'ssl_cacertfile' => '',
+    //'connect_timeout' => '',
+    //'timeout' => '',
+    //'connect_attempts' => '',
+    //'sleep_useconds' => '',
+    //'curl_options' => array(),
+
+    //'datacenterurl' => '',
+    //'jsonversion' => '',
+    //'input_encoding' => '',
   );
 
   public function getDefaultTransactionData($requestType) {
@@ -139,8 +134,8 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     $this->_username = $testConfig['username'];
     $this->_password = $testConfig['password'];
 
-    self::$_defaultConfigArray['connections']['json_interface']['username'] = $this->_username;
-    self::$_defaultConfigArray['connections']['json_interface']['password'] = $this->_password;
+    self::$_defaultConfigArray['username'] = $this->_username;
+    self::$_defaultConfigArray['password'] = $this->_password;
   }
 
   public function setUp() {
@@ -1256,13 +1251,9 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
       array(
 	array_merge(
           self::$_defaultConfigArray,
-          array(
-            'connections' => array(
-              'json_interface' => array(
-		'username' =>     $this->_username,
-	        'password' => 'PASSWORD',
-	      ),
-	    ),
+	  array(
+	    'username' =>     $this->_username,
+	    'password' => 'PASSWORD',
 	  )
 	),
         $this->getDefaultTransactionData('CACHETOKENISE'),
@@ -1326,12 +1317,8 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     $configData = array_replace_recursive(
       self::$_defaultConfigArray,
       array(
-	'connections' => array(
-	  'json_interface' => array(
-	    'ssl_verify_peer' => true,
-	    'ssl_cacertfile' => $rootCertificateFile,
-	  ),
-	),
+	'ssl_verify_peer' => true,
+	'ssl_cacertfile' => $rootCertificateFile,
       )
     );
 

@@ -21,7 +21,7 @@ class Api {
       $requestReference = $request->getSingle('requestreference');
       $this->_getLog()->info("Starting request.");
       
-      $url = $request->getSingle('datacenterurl', $this->_config->get('json_interface/datacenterurl'));
+      $url = $request->getSingle('datacenterurl', $this->_config->get('datacenterurl'));
       $url = rtrim($url, '/') . "/json/";
       
       $converter = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\Converter', array('config' => $this->_config, 'ioc' => $this->_ioc));
@@ -55,7 +55,7 @@ class Api {
       $returnValue = $data;
     }
     else {
-      $returnValue = iconv($this->_config->get('json_interface/input_encoding'), 'utf-8', $data);
+      $returnValue = iconv($this->_config->get('input_encoding'), 'utf-8', $data);
     }
     return $returnValue;
   }

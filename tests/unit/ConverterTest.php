@@ -38,8 +38,8 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
 
   public function providerEncode() {
     $configMap = array(
-      array('connections/json_interface/username', 'username'),
-      array('json_interface/jsonversion', 'json_version'),
+      array('username', 'username'),
+      array('jsonversion', 'json_version'),
     );
     $dummyRequest = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
     $dummyRequest->method('toArray')->willReturn(array('a' => 'b'));
@@ -50,8 +50,8 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
     );
 
     $configMap = array(
-      array('connections/json_interface/username', 'username2'),
-      array('json_interface/jsonversion', 'json_version2'),
+      array('username', 'username2'),
+      array('jsonversion', 'json_version2'),
     );
     $dummyRequest1 = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
     $dummyRequest1->method('toArray')->willReturn(array('a' => 'b'));

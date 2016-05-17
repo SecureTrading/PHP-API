@@ -39,7 +39,7 @@ class ExceptionMapper {
       $translatedMessage = $this->_translator->translate($this->_errorCode);
     }
     catch (\Exception $e) {
-      $this->_log->alert('Could not translate the following exception.');
+      $this->_log->alert('Could not translate the following exception.'); #TODO-see the ruby libary.  this should log the $e passed in and not the $e caught here (but we should log the code here)
       $this->_log->alert($e);
       return array(self::CODE_COULD_NOT_TRANSLATE, sprintf('Could not translate message with code "%s".', $this->_errorCode), array());
     }

@@ -7,12 +7,8 @@ if (!($autoload = realpath(__DIR__ . '/../../../autoload.php'))) {
 require_once($autoload);
 
 $configData = array(
-  'connections' => array(
-    'json_interface' => array(
-      'username' => 'your_web_services_username@test.com',
-      'password' => 'your_password',
-    ),
-  ),
+  'username' => 'your_web_services_username@test.com',
+  'password' => 'your_password',
 );
 
 $requestData = array(

@@ -15,7 +15,7 @@ class Phrasebook
 
   public function lookup($englishMessage, $locale = null) {
     if (!$locale) {
-      $locale = $this->_config->get('json_interface/locale');
+      $locale = $this->_config->get('locale');
     }
 
     $translatedMessage = $englishMessage;

@@ -23,14 +23,10 @@ class ApiBench implements \PhpBench\Benchmark {
     $testConfig = $helper->parseIniFile($filePath, array('username', 'password', 'siteReference'));
 
     $config = array(
-      'connections' => array(
-	'json_interface' => array(
-	  'username' => $testConfig['username'],
-	  'password' => $testConfig['password'],
-	  'ssl_verify_peer' => false,
-	  'ssl_verify_host' => 0,
-	),
-      ),
+      'username' => $testConfig['username'],
+      'password' => $testConfig['password'],
+      'ssl_verify_peer' => false,
+      'ssl_verify_host' => 0,
     );
 
     $request = array(
