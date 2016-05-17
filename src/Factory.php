@@ -25,7 +25,11 @@ class Factory {
     if ($ioc->hasOption('stpp_json_log_archive_filepath')) {
       $params['logArchivePath'] = $ioc->getOption('stpp_json_log_archive_filepath');
     }
-    
+
+    if ($ioc->hasOption('stpp_json_log_level')) {
+      $params['logLevel'] = $ioc->getOption('stpp_json_log_level');
+    }
+
     $log = new Log();
     $log->setLogger($ioc->get('stLog', $params));
     return $log;
@@ -41,6 +45,7 @@ class Factory {
     );
     $configData = array_replace_recursive($defaultConfig, $configData);
     $config = $ioc->get('\Securetrading\Config\Config', array($configData));
+
     return new Api($ioc, $config);
   }
 

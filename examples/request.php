@@ -1,6 +1,6 @@
 <?php
 
-if (!($autoload = realpath(__DIR__ . '/../../../autoload.php'))) {
+if (!($autoload = realpath(__DIR__ . '/../../../autoload.php')) && !($autoload = realpath(__DIR__ . '/../vendor/autoload.php'))) {
   throw new \Exception('Composer autoloader file could not be found.');
 }
 

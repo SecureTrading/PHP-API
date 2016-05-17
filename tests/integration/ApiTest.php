@@ -32,6 +32,11 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     //'datacenterurl' => '',
     //'jsonversion' => '',
     //'input_encoding' => '',
+
+    //'log_filename' => '',
+    //'log_filepath' => '',
+    //'log_archive_filepath' => '',
+    //;log_level' => '',
   );
 
   public function getDefaultTransactionData($requestType) {
