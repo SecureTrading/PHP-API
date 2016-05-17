@@ -15,7 +15,6 @@ return array(
       '\Securetrading\Stpp\JsonInterface\ExceptionMapper' => array('\Securetrading\Stpp\JsonInterface\Factory', 'exceptionMapper'),
     ),
     'dependencies' => array(
-      'stConfig',
       'stHttp',
       'stLog',
     ),
