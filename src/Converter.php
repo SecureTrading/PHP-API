@@ -7,7 +7,7 @@ class Converter {
 
   protected $_ioc;
 
-  public function __construct(\Securetrading\Config\ConfigInterface $config, \Securetrading\Ioc\IocInterface $ioc) {
+  public function __construct(ConfigInterface $config, \Securetrading\Ioc\IocInterface $ioc) {
     $this->_config = $config;
     $this->_ioc = $ioc;
   }

@@ -11,7 +11,7 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
   private $_stubIoc;
 
   public function setUp() {
-    $this->_stubConfig = $this->getMock('\Securetrading\Config\Config');
+    $this->_stubConfig = $this->getMock('\Securetrading\Stpp\JsonInterface\Config');
     $this->_stubIoc = $this->getMock('\Securetrading\Ioc\Ioc');
     $this->_stubLog = $this->getMockForAbstractClass('\Psr\Log\LoggerInterface');
     $this->_converter = new \Securetrading\Stpp\JsonInterface\Converter($this->_stubConfig, $this->_stubIoc);

@@ -37,23 +37,8 @@ class Factory {
 
   public static function api(\Securetrading\Ioc\IocInterface $ioc, $alias, $params) {
     $configData = $params;
-    $defaultConfig = array(
-      'datacenterurl' => 'https://webservices.securetrading.net',
-      'jsonversion' => '1.00',
-      'input_encoding' => 'iso8859-1',
-      'locale' => 'en_GB',
-    );
-    $configData = array_replace_recursive($defaultConfig, $configData);
-    $config = $ioc->get('\Securetrading\Config\Config', array($configData));
-
+    $config = $ioc->get('\Securetrading\Stpp\JsonInterface\Config', array($configData));
     return new Api($ioc, $config);
-  }
-
-  public static function http(\Securetrading\Ioc\IocInterface $ioc, $alias, $params) {
-    $config = $ioc->getParameter('config', $params);
-    $httpClient = $ioc->get('\Securetrading\Http\Curl');
-    \Securetrading\Http\Facade::configureHttp($httpClient, '', $config);
-    return new Http($httpClient);
   }
 
   public static function phrasebook(\Securetrading\Ioc\IocInterface $ioc, $alias, $params) {

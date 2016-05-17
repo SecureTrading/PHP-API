@@ -36,7 +36,7 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
 
   public function setUp() {
     $this->_stubIoc = $this->getMock('\Securetrading\Ioc\Ioc');
-    $this->_stubConfig = $this->getMock('\Securetrading\Config\Config');
+    $this->_stubConfig = $this->getMock('\Securetrading\Stpp\JsonInterface\Config');
 
     $this->_api = new \Securetrading\Stpp\JsonInterface\Api($this->_stubIoc, $this->_stubConfig);
   }

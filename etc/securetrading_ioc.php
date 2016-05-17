@@ -3,7 +3,6 @@
 return array(
   'stStppJson' => array(
     'definitions' => array(
-      '\Securetrading\Stpp\JsonInterface\Http' => array('\Securetrading\Stpp\JsonInterface\Factory', 'http'),
       '\Securetrading\Stpp\JsonInterface\Log' => array('\Securetrading\Stpp\JsonInterface\Factory', 'log'),
       '\Securetrading\Stpp\JsonInterface\Api' => array('\Securetrading\Stpp\JsonInterface\Factory', 'api'),
       'jsonApi' => array('\Securetrading\Stpp\JsonInterface\Factory', 'api'),

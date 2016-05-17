@@ -7,7 +7,7 @@ class Api {
 
   protected $_config;
 
-  public function __construct(\Securetrading\Ioc\IocInterface $ioc, \Securetrading\Config\ConfigInterface $config) {
+  public function __construct(\Securetrading\Ioc\IocInterface $ioc, ConfigInterface $config) {
     $this->_ioc = $ioc;
     $this->_config = $config;
   }
@@ -27,7 +27,7 @@ class Api {
       $converter = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\Converter', array('config' => $this->_config, 'ioc' => $this->_ioc));
       $jsonRequestString = $converter->encode($request);
 
-      $httpClient = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\Http', array('config' => $this->_config));
+      $httpClient = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\Http', array($this->_ioc, $this->_config));
       $httpResponseString = $httpClient->send($jsonRequestString, $requestReference, $url);
 
       $responseObject = $converter->decode($httpResponseString);

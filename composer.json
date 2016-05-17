@@ -9,7 +9,6 @@
     "securetrading/ioc" : "dev-master",
     "securetrading/data" : "dev-master",
     "securetrading/log" : "dev-master",
-    "securetrading/config" : "dev-master",
     "securetrading/http" : "dev-master"
 
   },

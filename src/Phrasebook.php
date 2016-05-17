@@ -8,7 +8,7 @@ class Phrasebook
 
   protected $_phraseBook = array();
 
-  public function __construct(\Securetrading\Config\ConfigInterface $config, array $phraseBook) {
+  public function __construct(ConfigInterface $config, array $phraseBook) {
     $this->_config = $config;
     $this->_phraseBook = $phraseBook;
   }

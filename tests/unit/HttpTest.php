@@ -3,34 +3,30 @@
 namespace Securetrading\Stpp\JsonInterface\Tests\Unit;
 
 class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
-
-  private $_http;
+  private $_stubIoc;
+  
+  private $_stubConfig;
 
   private $_stubCurl;
 
+  private $_http;
+
   public function setUp() {
-    $this->_stubCurl = $this->getMock('\Securetrading\Http\Curl', array(), array($this->getMockForAbstractClass('\Psr\Log\LoggerInterface')));
-    $this->_http = new \Securetrading\Stpp\JsonInterface\Http($this->_stubCurl);
+    $this->_stubIoc = $this->getMock('\Securetrading\Ioc\IocInterface');
+    $this->_stubConfig = $this->getMock('\Securetrading\Stpp\JsonInterface\Config');
+    $this->_stubCurl = $this->getMockBuilder('\Securetrading\Http\Curl')->disableOriginalConstructor()->getMock();
+    $this->_http = new \Securetrading\Stpp\JsonInterface\Http($this->_stubIoc, $this->_stubConfig);
+
+    $this->_stubConfig
+      ->method('toArray')
+      ->willReturn(array('demo_key' => 'demo_value'))
+    ;
   }
 
   /**
    * 
    */
   public function testSend() {
-    $validateCallback = function($inputArg) {
-      $headersArray = array(
-        'Content-type: application/json;charset=utf-8',
-	'Accept: application/json',
-	'Accept-Encoding: gzip',
-	'Connection: close',
-	'requestreference: request_reference',
-      );
-
-      $versionInfo = array_pop($inputArg); // Note - Too brittle.  This assumes the VERSIONINFO is the last header added by the SUT.
-
-      return ($inputArg === $headersArray) && preg_match('/^VERSIONINFO: PHP::.+::1.0.0::.+$/', $versionInfo); // Note - Too brittle.  Will have to update the library version here every release.
-    };
-
     $this->_stubCurl
       ->method('getResponseCode')
       ->willReturn(200)
@@ -38,31 +34,41 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
 
     $this->_stubCurl
       ->expects($this->once())
-      ->method('setUrl')
-      ->with($this->equalTo('url'))
-    ;
-
-    $this->_stubCurl
-      ->expects($this->once())
-      ->method('setRequestHeaders')
-      ->with($this->callback($validateCallback))
-    ;
-
-    $that = $this;
-
-    $this->_stubCurl
-      ->expects($this->once())
-      ->method('setUserAgent')
-      ->with($this->callback(function($inputUserAgent) use ($that) {
-        return preg_match('/^PHP-.+$/', $inputUserAgent);
-      }))
-    ;
-
-    $this->_stubCurl
-      ->expects($this->once())
       ->method('post')
       ->with($this->equalTo('json_request_string'))
       ->willReturn('json_response_string')
+    ;
+
+    $validateCallback = function($inputArg) {
+      $expectedIocParams = array(
+        'config' => array(
+          'demo_key' => 'demo_value',
+          'url' => 'url',
+	  'http_headers' => array(
+	    'Content-type: application/json;charset=utf-8',
+	    'Accept: application/json',
+	    'Accept-Encoding: gzip',
+	    'Connection: close',
+	    'requestreference: request_reference',
+	  ),
+	),
+      );
+
+      // Note - These two lines are too brittle.  Relies on order of headers/array keys and will require updating every release (because of the framework version).
+      $versionInfoHeader = array_pop($inputArg['config']['http_headers']);
+      $userAgent = array_pop($inputArg['config']);
+
+      return (
+        $inputArg === $expectedIocParams
+        && preg_match('/^VERSIONINFO: PHP::.+::1.0.0::.+$/', $versionInfoHeader)
+        && preg_match('/^PHP-.+$/', $userAgent)
+      );
+    };
+    
+    $this->_stubIoc
+      ->method('get')
+      ->with($this->equalTo('\Securetrading\Http\Curl'), $this->callback($validateCallback))
+      ->willReturn($this->_stubCurl)
     ;
 
     $returnValue = $this->_http->send('json_request_string', 'request_reference', 'url');
@@ -75,6 +81,11 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
    * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\HttpException::CODE_CURL_ERROR
    */
   public function testSend_When401SendingThrewException() {
+    $this->_stubIoc
+      ->method('get')
+      ->willReturn($this->_stubCurl)
+    ;
+
     $this->_stubCurl
       ->method('post')
       ->will($this->throwException(new \Securetrading\Http\CurlException('Message.')))
@@ -88,6 +99,11 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
    * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\HttpException::CODE_401_INVALID_HTTP_STATUS
    */
   public function testSend_When401HttpStatusReturned() {
+    $this->_stubIoc
+      ->method('get')
+      ->willReturn($this->_stubCurl)
+    ;
+
     $this->_stubCurl
       ->method('getResponseCode')
       ->willReturn(401)
@@ -101,6 +117,11 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
    * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\HttpException::CODE_GENERIC_INVALID_HTTP_STATUS
    */
   public function testSend_WhenOtherInvalidHttpStatusReturned() {
+    $this->_stubIoc
+      ->method('get')
+      ->willReturn($this->_stubCurl)
+    ;
+
     $this->_stubCurl
       ->method('getResponseCode')
       ->willReturn(402)
