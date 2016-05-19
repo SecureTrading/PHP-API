@@ -3,7 +3,6 @@
 namespace Securetrading\Stpp\JsonInterface\Tests\Unit;
 
 class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
-
   private $_converter;
 
   private $_stubConfig;

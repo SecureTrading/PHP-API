@@ -7,6 +7,8 @@ class Api {
 
   protected $_config;
 
+  protected $_translator;
+
   public function __construct(\Securetrading\Ioc\IocInterface $ioc, ConfigInterface $config) {
     $this->_ioc = $ioc;
     $this->_config = $config;
@@ -15,6 +17,8 @@ class Api {
   public function process($request) {
     $requestReference = 'NOREQREF';
     try {
+      $this->_translator = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\Translator', array('config' => $this->_config));
+
       $request = $this->_verifyRequest($request);
       $this->_convertCharacterEncodingOfRequest($request);
 
@@ -31,12 +35,19 @@ class Api {
       $httpResponseString = $httpClient->send($jsonRequestString, $requestReference, $url);
 
       $responseObject = $converter->decode($httpResponseString);
+      
       $this->_verifyResult($responseObject, $requestReference);
     }
     catch (\Exception $e) {
       $this->_getLog()->alert(sprintf('Exception of type %s caught with code %s in %s on line %s: "%s".', get_class($e), $e->getCode(), $e->getFile(), $e->getLine(), $e->getMessage()));
       $this->_getLog()->alert($e);
       $responseObject = $this->_generateError($e, $requestReference); 
+    }
+
+    foreach($responseObject->get('responses') as $response) {
+      $defaultMessage = $response->has('errormessage') ? $response->get('errormessage') : '';
+      $errorMessage = $this->_translator->translate($response->get('errorcode'), $defaultMessage);
+      $response->set('errormessage', $errorMessage);
     }
 
     $this->_getLog()->info("Finished request.");
@@ -91,17 +102,17 @@ class Api {
   }
 
   protected function _generateError(\Exception $e, $requestReference) {
-    $mapper = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\ExceptionMapper', array('config' => $this->_config));
+    $mapper = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\ExceptionMapper');
 
-    list($displayErrorCode, $displayErrorMessage, $displayErrorData) = $mapper->getOutputErrorMessage($e);
+    list($displayErrorCode, $displayErrorData) = $mapper->getOutputErrorCodeAndData($e);
     
     $responseObject = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\Response');
-    $responseObject->setMultiple(array(
+
+    $responseObject->fromArray(array(
       'requestreference' => $requestReference,
       'responses' => array(
         array(
           'errorcode' => (string) $displayErrorCode,
-          'errormessage' => $displayErrorMessage,
 	  'errordata' => $displayErrorData,
 	  'requesttypedescription' => 'ERROR',
 	  'requestreference' => $requestReference

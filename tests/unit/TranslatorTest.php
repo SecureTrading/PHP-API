@@ -5,21 +5,32 @@ namespace Securetrading\Stpp\JsonInterface\Tests\Unit;
 use org\bovigo\vfs\vfsStream;
 
 class TranslatorTest extends \Securetrading\Unittest\UnittestAbstract {
+  private $_phrasebookStub;
+
+  private $_logStub;
+
   public function setUp() {
     $this->_phrasebookStub = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Phrasebook')->disableOriginalConstructor()->getMock();
+    $this->_logStub = $this->getMockForAbstractClass('\Psr\Log\LoggerInterface');
   }
 
   private function _newInstance(array $messages) {
-    return new \Securetrading\Stpp\JsonInterface\Translator($messages, $this->_phrasebookStub);
+    return new \Securetrading\Stpp\JsonInterface\Translator($messages, $this->_phrasebookStub, $this->_logStub);
   }
 
   /**
-   * @expectedException \Securetrading\Stpp\JsonInterface\TranslatorException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\TranslatorException::CODE_NO_MESSAGE_FOR_CODE
+   * 
    */
   public function testTranslate_WhenCodeNotInMessages() {
+    $this->_logStub
+      ->expects($this->once())
+      ->method('alert')
+      ->with($this->equalTo('There was no error message mapping for code \'code_that_does_not_exist\'.'))
+    ;
+
     $translator = $this->_newInstance(array());
-    $translator->translate('code_that_does_not_exist');
+    $actualReturnValue = $translator->translate('code_that_does_not_exist', 'default_message');
+    $this->assertEquals('default_message', $actualReturnValue);
   }
 
   /**
@@ -34,7 +45,7 @@ class TranslatorTest extends \Securetrading\Unittest\UnittestAbstract {
     ;
 
     $translator = $this->_newInstance(array('code1' => 'English message.'));
-    $actualReturnValue = $translator->translate('code1');
+    $actualReturnValue = $translator->translate('code1', 'default_message');
     $this->assertEquals('Translated message.', $actualReturnValue);
   }
 }

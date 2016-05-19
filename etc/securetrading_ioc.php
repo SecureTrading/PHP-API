@@ -12,7 +12,6 @@ return array(
       'jsonRequests' => array('\Securetrading\Stpp\JsonInterface\Factory', 'requests'),
       '\Securetrading\Stpp\JsonInterface\Phrasebook' => array('\Securetrading\Stpp\JsonInterface\Factory', 'phrasebook'),
       '\Securetrading\Stpp\JsonInterface\Translator' => array('\Securetrading\Stpp\JsonInterface\Factory', 'translator'),
-      '\Securetrading\Stpp\JsonInterface\ExceptionMapper' => array('\Securetrading\Stpp\JsonInterface\Factory', 'exceptionMapper'),
     ),
     'dependencies' => array(
       'stHttp',

@@ -60,7 +60,8 @@ class Converter {
     }
 
     $responseObject = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\Response');
-    $responseObject->setMultiple(array(
+
+    $responseObject->fromArray(array(
       'requestreference' => $decodedResponse['requestreference'],
       'version' => $decodedResponse['version'],
       'responses' => $decodedResponse['response'],

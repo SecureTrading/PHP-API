@@ -48,19 +48,12 @@ class Factory {
     return new Phrasebook($config, $phrasebook);
   }
 
-  public static function exceptionMapper(\Securetrading\Ioc\IocInterface $ioc, $alias, $params) {
-    $config = $ioc->getParameter('config', $params);
-    return new ExceptionMapper(
-      $ioc->get('\Securetrading\Stpp\JsonInterface\Translator', array('config' => $config)),
-      $ioc->getSingleton('\Securetrading\Stpp\JsonInterface\Log')
-    );
-  }
-
   public static function translator(\Securetrading\Ioc\IocInterface $ioc, $alias, $params) {
     $messagesFilepath = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'errormessages.json');
     $messages = $ioc->get('\Securetrading\Stpp\JsonInterface\JsonFileReader')->getContentsAsArray($messagesFilepath);
     $config = $ioc->getParameter('config', $params);
     $phrasebook = $ioc->get('\Securetrading\Stpp\JsonInterface\Phrasebook', array('config' => $config));
-    return new Translator($messages, $phrasebook);
+    $log = $ioc->getSingleton('\Securetrading\Stpp\JsonInterface\Log');
+    return new Translator($messages, $phrasebook, $log);
   }
 }

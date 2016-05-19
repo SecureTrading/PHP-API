@@ -13,34 +13,23 @@ class ExceptionMapperTest extends \Securetrading\Unittest\UnittestAbstract {
   private $_exceptionMapper;
 
   public function setUp() {
-    $this->_translatorStub =  $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Translator')->disableOriginalConstructor()->getMock();
-    $this->_logStub = $this->getMockForAbstractClass('\Psr\Log\LoggerInterface');
-    $this->_exceptionMapper = new ExceptionMapper($this->_translatorStub, $this->_logStub);
+    $this->_exceptionMapper = new ExceptionMapper();
   }
 
   /**
-   * @dataProvider providerGetOutputErrorMessage
+   * @dataProvider providerGetOutputErrorCodeAndData
    */
-  public function testGetOutputErrorMessage(\Exception $e, $expectedCode, $expectedErrorData) {
-    $this->_translatorStub
-      ->expects($this->once())
-      ->method('translate')
-      ->with($this->equalTo($expectedCode))
-      ->willReturn('Translated message.')
-    ;
-
-    $returnValue = $this->_exceptionMapper->getOutputErrorMessage($e);
+  public function testGetOutputErrorCodeAndData(\Exception $e, $expectedCode, $expectedErrorData) {
+    $returnValue = $this->_exceptionMapper->getOutputErrorCodeAndData($e);
 
     $returnCode = $returnValue[0];
-    $returnMessage = $returnValue[1];
-    $returnData = $returnValue[2];
+    $returnData = $returnValue[1];
 
     $this->assertEquals($expectedCode, $returnCode);
-    $this->assertEquals('Translated message.', $returnMessage);
     $this->assertEquals($expectedErrorData, $returnData);
   }
 
-  public function providerGetOutputErrorMessage() {    
+  public function providerGetOutputErrorCodeAndData() {    
     // \Securetrading\Stpp\JsonInterface\RequestsException:
 
     $e = new \Securetrading\Stpp\JsonInterface\RequestsException('Message.', \Securetrading\Stpp\JsonInterface\RequestsException::CODE_INDIVIDUAL_REQUEST_HAS_DATACENTERURL);
@@ -65,6 +54,12 @@ class ExceptionMapperTest extends \Securetrading\Unittest\UnittestAbstract {
     $e = new \Securetrading\Stpp\JsonInterface\ConverterException('Message.', \Securetrading\Stpp\JsonInterface\ConverterException::CODE_ENCODE_INVALID_REQUEST_TYPE);
     $this->_addDataSet($e, 10, array('Message.'));
 
+    $e = new \Securetrading\Stpp\JsonInterface\ConverterException('Message.', \Securetrading\Stpp\JsonInterface\ConverterException::CODE_ENCODE_TO_JSON_FAILED);
+    $this->_addDataSet($e, 9, array('Message.'));
+
+    $e = new \Securetrading\Stpp\JsonInterface\ConverterException('Message.', \Securetrading\Stpp\JsonInterface\ConverterException::CODE_DECODE_FROM_JSON_FAILED);
+    $this->_addDataSet($e, 9, array('Message.'));
+
     $e = new \Securetrading\Stpp\JsonInterface\ConverterException('Message.', 999);
     $this->_addDataSet($e, \Securetrading\Stpp\JsonInterface\ExceptionMapper::CODE_DEFAULT, array());
 
@@ -82,46 +77,27 @@ class ExceptionMapperTest extends \Securetrading\Unittest\UnittestAbstract {
     $e = new \Securetrading\Stpp\JsonInterface\HttpException('Message.', 999);
     $this->_addDataSet($e, \Securetrading\Stpp\JsonInterface\ExceptionMapper::CODE_DEFAULT, array());
 
-    // \Exception (or any other unhandled exception type):
-
-    $e = new \Exception('Message.');
-    $this->_addDataSet($e, \Securetrading\Stpp\JsonInterface\ExceptionMapper::CODE_DEFAULT, array());
-
     return $this->_getDataSets();
   }
 
   /**
-   *
+   * 
    */
-  public function testGetOutputErrorMessage_WhenTranslatorThrowsException() {
-    $e = new \Securetrading\Stpp\JsonInterface\HttpException('Message.', \Securetrading\Stpp\JsonInterface\HttpException::CODE_GENERIC_INVALID_HTTP_STATUS);
+  public function testGetOutputErrorCodeAndData_WithUnhanldedException() {
+    $previousException = new \Exception('Previous exception message.');
+    $exception = new \Exception('Message.', 0, $previousException);
 
-    $exception = new \Exception('Exception message.');
+    $returnValue = $this->_exceptionMapper->getOutputErrorCodeAndData($exception);
 
-    $this->_translatorStub
-      ->expects($this->once())
-      ->method('translate')
-      ->with($this->equalTo(8))
-      ->will($this->throwException($exception))
-    ;
+    $returnedErrorCode = $returnValue[0];
+    $returnedErrorData = $returnValue[1];
 
-    $this->_logStub
-      ->expects($this->exactly(2))
-      ->method('alert')
-      ->withConsecutive(
-        array($this->equalTo('Could not translate the following exception.')), 
-	array($this->identicalTo($exception))
-      )
-    ;
+    $this->assertEquals(\Securetrading\Stpp\JsonInterface\ExceptionMapper::CODE_DEFAULT, $returnedErrorCode);
 
-    $returnValue = $this->_exceptionMapper->getOutputErrorMessage($e);
-
-    $returnCode = $returnValue[0];
-    $returnMessage = $returnValue[1];
-    $returnData = $returnValue[2];
-
-    $this->assertEquals(\Securetrading\Stpp\JsonInterface\ExceptionMapper::CODE_COULD_NOT_TRANSLATE, $returnCode);
-    $this->assertEquals('Could not translate message with code "8".', $returnMessage);
-    $this->assertEquals(array(), $returnData);
+    $this->assertEquals('Message.', $returnedErrorData[0]); # Exception message.
+    $this->assertRegExp("/^.+ExceptionMapperTest\.php$/", $returnedErrorData[1]); # Exception file.
+    $this->assertTrue(is_int($returnedErrorData[2])); # Exception line number.
+    $this->assertRegExp("/^#0 \[internal function\].+$/m", $returnedErrorData[3]); # Exception stack trace.
+    $this->assertRegExp("/^.+Previous exception message\..+$/m", $returnedErrorData[4]); # Previous exception stack trace.
   }
 }

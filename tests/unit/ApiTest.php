@@ -55,10 +55,12 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
     $stubExceptionMapper = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\ExceptionMapper')->disableOriginalConstructor()->getMock();
     $stubRequest = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
     $response = new \Securetrading\Stpp\JsonInterface\Response();
+    $translatorStub = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Translator')->disableOriginalConstructor()->getMock();
 
     $returnValueMap = array(
-      array('\Securetrading\Stpp\JsonInterface\ExceptionMapper', array('config' => $this->_stubConfig), $stubExceptionMapper),
+      array('\Securetrading\Stpp\JsonInterface\ExceptionMapper', array(), $stubExceptionMapper),
       array('\Securetrading\Stpp\JsonInterface\Response', array(), $response),
+      array('\Securetrading\Stpp\JsonInterface\Translator', array('config' => $this->_stubConfig), $translatorStub),
     );
 
     $this->_stubIoc
@@ -287,7 +289,7 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
     $responseObject = new \Securetrading\Stpp\JsonInterface\Response();
 
     $returnValueMap = array(
-      array('\Securetrading\Stpp\JsonInterface\ExceptionMapper', array('config' => $this->_stubConfig), $exceptionMapperStub),
+      array('\Securetrading\Stpp\JsonInterface\ExceptionMapper', array(), $exceptionMapperStub),
       array('\Securetrading\Stpp\JsonInterface\Response', array(), $responseObject),
     );
 
@@ -300,9 +302,9 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
 
     $exceptionMapperStub
       ->expects($this->once())
-      ->method('getOutputErrorMessage')
+      ->method('getOutputErrorCodeAndData')
       ->with($this->equalTo($stubException))
-      ->willReturn(array('30001', 'error message', array()))
+      ->willReturn(array('30001',  array('error', 'data')))
     ;
 
     $expectedResponseData = array(
@@ -310,8 +312,7 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
       'responses' => array(
         array(
           'errorcode' => '30001',
-	  'errormessage' => 'error message',
-	  'errordata' => array(),
+	  'errordata' => array('error', 'data'),
 	  'requesttypedescription' => 'ERROR',
 	  'requestreference' => 'REQUEST_REFERENCE',
 	),

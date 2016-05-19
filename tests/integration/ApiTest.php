@@ -1372,4 +1372,183 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     );
     return $this->_getDataSets();
   }
+
+  /**
+   * 
+   */
+  public function testTranslationOfReturnedErrorMessage_WhenNoError() {
+    $configData = array_replace_recursive(
+      self::$_defaultConfigArray,
+      array(
+	'locale' => 'fr_fr',
+      )
+    );
+
+    $requestData = array_merge(
+      $this->getDefaultTransactionData('AUTH'),
+      array(
+	'pan' => '4111110000000211',
+	'expirymonth' => '11',
+	'expiryyear' => '2031',
+	'securitycode' => '123',
+	'paymenttypedescription' => 'VISA',
+      )
+    );
+
+    $actualResponseData = $this->_processRequest($configData, $requestData);
+    
+    $expectedResponseData = array(
+      'responses' => array(
+	array(
+	  'errorcode' => '0',
+	  'errormessage' => 'D\'accord',
+	),
+      )
+    );
+
+    $this->_assertResponseData($expectedResponseData, $actualResponseData);
+  }
+
+  /**
+   * 
+   */
+  public function testTranslationOfReturnedErrorMessage_WhenUnknownError() {
+    $configData = array_replace_recursive(
+      self::$_defaultConfigArray,
+      array(
+	'locale' => 'fr_fr',
+      )
+    );
+
+    $requestData = array_merge(
+      $this->getDefaultTransactionData('AUTH'),
+      array(
+	'pan' => '4111110000000211',
+	'expirymonth' => '11',
+	'expiryyear' => '2031',
+	'securitycode' => '123',
+	'paymenttypedescription' => 'VISA',
+      )
+    );
+
+    $request = new \stdClass();
+    // Note - Start modified from self::_processRequest().
+    $api = $this->_newInstance($configData);
+    $response = $api->process($request);
+    
+    $this->assertInstanceOf('\Securetrading\Stpp\JsonInterface\Response', $response);
+
+    $actualResponseData = $response->toArray();
+    // Note - End modified from self::_processRequest().
+    
+    $expectedResponseData = array(
+      'responses' => array(
+	array(
+	  'errorcode' => '10',
+	  'errormessage' => 'Une utilisation incorrecte de l\'API Secure Trading',
+	),
+      )
+    );
+
+    $this->_assertResponseData($expectedResponseData, $actualResponseData);
+  }
+
+  /**
+   * @dataProvider providerTranslationOfReturnedErrorMessage_WhenMultipleResponses
+   */
+  public function testTranslationOfReturnedErrorMessage_WhenMultipleResponses($threedquery_Subscription) {
+    list($configData, $requestData, $expectedResponseData) = $threedquery_Subscription;
+    $actualResponseData = $this->_processRequest($configData, $requestData);
+    $this->_assertResponseData($expectedResponseData, $actualResponseData);
+  }
+
+  public function providerTranslationOfReturnedErrorMessage_WhenMultipleResponses() {
+    $this->_addDataSet(
+      array(
+	array_replace_recursive(
+          self::$_defaultConfigArray,
+          array(
+	    'locale' => 'fr_fr',
+          )
+	),
+	array_merge(
+	  $this->getDefaultTransactionData('ACCOUNTCHECK'),
+	  $this->getDefaultTransactionData('SUBSCRIPTION'),
+	  array(
+	    'requesttypedescriptions' => array('ACCOUNTCHECK', 'SUBSCRIPTION'),
+	    'pan' => '4111110000000211',
+	    'expirymonth' => '11',
+	    'expiryyear' => '2031',
+	    'securitycode' => '123',
+	    'paymenttypedescription' => 'VISA',
+	    'baseamount' => '100',
+	  )
+	),
+	array(
+	  'responses' => array(
+            array(
+	      'errorcode' => '0',
+	      'errormessage' => 'D\'accord',
+	      'requesttypedescription' => 'ACCOUNTCHECK',
+	    ),
+	    array(
+	      'errorcode' => '0',
+	      'errormessage' => 'D\'accord',
+	      'requesttypedescription' => 'SUBSCRIPTION',
+	    ),
+	  ),
+        ),
+      )
+    );    
+    return $this->_getDataSets();
+  }
+
+  /**
+   * @dataProvider providerErrorData_ContainsExceptionData_WhenUnexpectedExceptionCaught
+   */
+  public function testErrorData_ContainsExceptionData_WhenUnexpectedExceptionCaught($auth) {
+    $mainExceptionMessage = 'Causing an exception to be thrown from within the try/catch of \Securetrading\Stpp\JsonInterface\Api::process() so we can examine the returned errordata.';
+
+    $this->_ioc->set('\Securetrading\Stpp\JsonInterface\Converter', function(\Securetrading\Ioc\IocInterface $ioc, $alias, $params) use ($mainExceptionMessage) {
+      $previousException = new \Exception('Previous exception message.');
+      throw new \Exception($mainExceptionMessage, 0, $previousException);
+    });
+
+    list($configData, $requestData, $expectedResponseData) = $auth;
+    $actualResponseData = $this->_processRequest($configData, $requestData);
+    $this->_assertResponseData($expectedResponseData, $actualResponseData);
+
+    $errorData = $actualResponseData['responses'][0]['errordata'];
+    $this->assertEquals($mainExceptionMessage, $errorData[0]); # Exception message.
+    $this->assertRegExp("/^.+ApiTest\.php$/", $errorData[1]); # Exception file.
+    $this->assertTrue(is_int($errorData[2])); # Exception line number.
+    $this->assertRegExp("/^#0 \[internal function\].+$/m", $errorData[3]); # Exception stack trace.
+    $this->assertRegExp("/^.+Previous exception message\..+$/m", $errorData[4]); # Previous exception stack trace.
+  }
+
+  public function providerErrorData_ContainsExceptionData_WhenUnexpectedExceptionCaught() {
+    $this->_addDataSet(
+      array(
+        self::$_defaultConfigArray,
+	array_merge(
+          $this->getDefaultTransactionData('AUTH'),
+	  array(
+	    'pan' => '4111110000000211',
+	    'expirymonth' => '11',
+	    'expiryyear' => '2031',
+	    'securitycode' => '123',
+	    'paymenttypedescription' => 'VISA',
+	  )
+	),
+	array(
+	  'responses' => array(
+            array(
+	      'errorcode' => '9',
+	    ),
+	  ),
+        ),
+      )
+    );    
+    return $this->_getDataSets();
+  }
 }
