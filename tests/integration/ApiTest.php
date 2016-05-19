@@ -1551,4 +1551,72 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     );    
     return $this->_getDataSets();
   }
+
+  /**
+   * @dataProvider providerLogging
+   */
+  public function testLogging($expectedLines, $logLevel = null) {
+    if (null !== $logLevel) {
+      $this->_ioc->setOption('stpp_json_log_level', $logLevel);
+    }
+   
+    $requestData = array_merge(
+      $this->getDefaultTransactionData('AUTH'),
+      array(
+	'pan' => '4111110000000211',
+	'expirymonth' => '11',
+	'expiryyear' => '2031',
+	'securitycode' => '123',
+	'paymenttypedescription' => 'VISA',
+      )
+    );
+
+    $actualResponseData = $this->_processRequest(self::$_defaultConfigArray, $requestData);
+    $this->assertEquals('0', $actualResponseData['responses'][0]['errorcode']);
+
+    $contents = file_get_contents($this->_testDir . 'logs' . DIRECTORY_SEPARATOR . 'json_log.txt');
+    $lines = explode(PHP_EOL, $contents);
+
+    $this->assertEquals("", array_pop($lines)); # Remove the last line (it is an empty line; but assert this for sanity).
+
+    $requestReferences = array();
+
+    foreach($lines as $line) {
+      $this->assertEquals(1, preg_match("/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2} UTC - [A-Z]+ - (A[0123456789abcdefghjkmnpqrtuvwxy]{8}) - .+$/", $line, $matches));
+      $requestReferences[] = $matches[1];
+    }
+
+    $this->assertEquals(1, count(array_unique($requestReferences))); # Same requestreference used for all log entries in the transaction.
+
+    $this->assertEquals(count($expectedLines), count($lines));
+
+    foreach($expectedLines as $line) {
+      $logLevel = preg_quote($line[0]);
+      $logMessage = preg_quote($line[1]);
+      $regex = "/.+${logLevel}.+${logMessage}/";
+      $this->assertEquals(1, preg_match($regex, $contents), sprintf('Trying to match %s.', $regex));
+    }
+  }
+
+  public function providerLogging() {
+    $this->_addDataSet(array(
+      array('INFO', 'Starting request.'),
+      array('DEBUG', 'Starting encoding.'),
+      array('DEBUG', 'Instance of \Securetrading\Stpp\JsonInterface\Request detected.'),
+      array('DEBUG', 'Finished encoding.'),
+      array('DEBUG', 'Starting encoding.'),
+      array('DEBUG', 'Finished decoding.'),
+      array('INFO', 'Finished request.'),
+    ), null);
+
+    $this->_addDataSet(array(
+      array('DEBUG', 'Starting encoding.'),
+      array('DEBUG', 'Instance of \Securetrading\Stpp\JsonInterface\Request detected.'),
+      array('DEBUG', 'Finished encoding.'),
+      array('DEBUG', 'Starting encoding.'),
+      array('DEBUG', 'Finished decoding.'),
+    ), \Securetrading\Log\Filter::DEBUG);
+
+    return $this->_getDataSets();
+  }
 }
