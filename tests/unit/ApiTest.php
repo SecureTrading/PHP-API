@@ -94,19 +94,53 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   *
+   * @dataProvider provider_verifyRequest
    */
-  public function test_getLog() {
-    $this->_stubIoc
+  public function test_verifyRequest($request) {
+    $returnValue = $this->_($this->_api, '_verifyRequest', $request);
+    $this->assertSame($request, $returnValue);
+  }
+
+  public function provider_verifyRequest() {
+    $this->_addDataSet($this->_newRequest());
+    $this->_addDataSet($this->_newRequests());
+    return $this->_getDataSets();
+  }
+
+  /**
+   * 
+   */
+  public function test_verifyRequest_WhenArrayGiven() {    
+    $mockedRequest = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
+    $mockedRequest
       ->expects($this->once())
-      ->method('getSingleton')
-      ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
-      ->willReturn('dummy_return_log_object')
+      ->method('set')
+      ->with($this->equalTo(array('key' => 'value')))
     ;
 
-    $actualReturnValue = $this->_($this->_api, '_getLog');
+    $this->_stubIoc
+      ->expects($this->once())
+      ->method('get')
+      ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Request'))
+      ->willReturn($mockedRequest)
+    ;
 
-    $this->assertEquals('dummy_return_log_object', $actualReturnValue);
+    $returnValue = $this->_($this->_api, '_verifyRequest', array('key' => 'value'));
+    $this->assertSame($mockedRequest, $returnValue);
+  }
+
+  /**
+   * @dataProvider provider_verifyRequest_WithInvalidRequest
+   * @expectedException \Securetrading\Stpp\JsonInterface\ApiException
+   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\ApiException::CODE_INVALID_REQUEST_TYPE
+   */
+  public function test_verifyRequest_WithInvalidRequest($request) {
+    $returnValue = $this->_($this->_api, '_verifyRequest', $request);
+  }
+
+  public function provider_verifyRequest_WithInvalidRequest() {
+    $this->_addDataSet(new \Securetrading\Stpp\JsonInterface\Response());
+    return $this->_getDataSets();
   }
 
   /**
@@ -200,53 +234,26 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   * @dataProvider provider_verifyRequest
+   *
    */
-  public function test_verifyRequest($request) {
-    $returnValue = $this->_($this->_api, '_verifyRequest', $request);
-    $this->assertSame($request, $returnValue);
-  }
-
-  public function provider_verifyRequest() {
-    $this->_addDataSet($this->_newRequest());
-    $this->_addDataSet($this->_newRequests());
-    return $this->_getDataSets();
-  }
-
-  /**
-   * 
-   */
-  public function test_verifyRequest_WhenArrayGiven() {    
-    $mockedRequest = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
-    $mockedRequest
-      ->expects($this->once())
-      ->method('set')
-      ->with($this->equalTo(array('key' => 'value')))
-    ;
-
-    $this->_stubIoc
+  public function test_getUrl() {
+    $this->_stubConfig
       ->expects($this->once())
       ->method('get')
-      ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Request'))
-      ->willReturn($mockedRequest)
+      ->with($this->equalTo('datacenterurl'))
+      ->willReturn('default_datacenterurl')
     ;
 
-    $returnValue = $this->_($this->_api, '_verifyRequest', array('key' => 'value'));
-    $this->assertSame($mockedRequest, $returnValue);
-  }
+    $stubRequest = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
+    $stubRequest
+      ->expects($this->once())
+      ->method('getSingle')
+      ->with($this->equalTo('datacenterurl'), $this->equalTo('default_datacenterurl'))
+      ->willReturn('url/')
+    ;
 
-  /**
-   * @dataProvider provider_verifyRequest_WithInvalidRequest
-   * @expectedException \Securetrading\Stpp\JsonInterface\ApiException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\ApiException::CODE_INVALID_REQUEST_TYPE
-   */
-  public function test_verifyRequest_WithInvalidRequest($request) {
-    $returnValue = $this->_($this->_api, '_verifyRequest', $request);
-  }
-
-  public function provider_verifyRequest_WithInvalidRequest() {
-    $this->_addDataSet(new \Securetrading\Stpp\JsonInterface\Response());
-    return $this->_getDataSets();
+    $returnValue = $this->_($this->_api, '_getUrl', $stubRequest);
+    $this->assertEquals('url/json/', $returnValue);
   }
 
   /**
@@ -260,9 +267,9 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
       ->willReturn('REQUEST_REFERENCE')
     ;
 
-    $returnValue = $this->_($this->_api, '_verifyResult', $stubResponse, 'REQUEST_REFERENCE');    
+    $this->_($this->_api, '_verifyResult', $stubResponse, 'REQUEST_REFERENCE');    
 
-    $this->assertSame($this->_api, $returnValue);
+    $this->assertTrue(true); # Dummy assertion; this test ensures no exceptions are thrown.
   }
 
   /**
@@ -323,5 +330,21 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
 
     $this->assertSame($responseObject, $actualReturnValue);
     $this->assertEquals($expectedResponseData, $responseObject->toArray());
-  } 
+  }
+
+  /**
+   *
+   */
+  public function test_getLog() {
+    $this->_stubIoc
+      ->expects($this->once())
+      ->method('getSingleton')
+      ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
+      ->willReturn('dummy_return_log_object')
+    ;
+
+    $actualReturnValue = $this->_($this->_api, '_getLog');
+
+    $this->assertEquals('dummy_return_log_object', $actualReturnValue);
+  }
 }

@@ -15,14 +15,13 @@ class Converter {
   public function encode(\Securetrading\Stpp\JsonInterface\AbstractRequest $inputRequest) {
     $this->_getLog()->debug("Starting encoding.");
 
-    $requests = array();
     if ($inputRequest instanceof \Securetrading\Stpp\JsonInterface\Request) {
       $this->_getLog()->debug("Instance of \Securetrading\Stpp\JsonInterface\Request detected.");
-      $requests[] = $inputRequest;
+      $requests = array($inputRequest);
     }
     else if ($inputRequest instanceof \Securetrading\Stpp\JsonInterface\Requests) {
       $this->_getLog()->debug("Instance of \Securetrading\Stpp\JsonInterface\Requests detected.");
-      $requests = array_merge($requests, $inputRequest->getRequests());
+      $requests = $inputRequest->getRequests();
     }
     else { // Note - Just a failsafe in case we ever extend \Securetrading\Stpp\JsonInterface\AbstractRequest with another child class.
       throw new ConverterException(sprintf("Instances of '%s' cannot be handled by this function.", get_class($inputRequest)), ConverterException::CODE_ENCODE_INVALID_REQUEST_TYPE);
