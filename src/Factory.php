@@ -13,6 +13,10 @@ class Factory {
     return new \Securetrading\Stpp\JsonInterface\Requests($ioc);
   }
 
+  public static function response(\Securetrading\Ioc\IocInterface $ioc, $alias, $params) {
+    return new \Securetrading\Stpp\JsonInterface\Response($ioc);
+  }
+
   public static function log(\Securetrading\Ioc\IocInterface $ioc, $alias, $params) {
     if ($ioc->hasOption('stpp_json_log_filename')) {
       $params['logFileName'] = $ioc->getOption('stpp_json_log_filename');

@@ -8,10 +8,9 @@ class AbstractRequestTest extends \Securetrading\Unittest\UnittestAbstract {
   private $_abstractRequest;
 
   public function setUp() {
-    #$this->_abstractRequest = new \Securetrading\Stpp\JsonInterface\Request();
     $iocMock = $this->getMockForAbstractClass('\Securetrading\Ioc\IocInterface');
     $iocMock
-      ->expects($this->once())
+      ->expects($this->any())
       ->method('getSingleton')
       ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
       ->willReturn($this->getMock('\Securetrading\Stpp\JsonInterface\Log'))

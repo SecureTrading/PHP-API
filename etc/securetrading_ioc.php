@@ -10,6 +10,7 @@ return array(
       'jsonRequest' => array('\Securetrading\Stpp\JsonInterface\Factory', 'request'),
       '\Securetrading\Stpp\JsonInterface\Requests' => array('\Securetrading\Stpp\JsonInterface\Factory', 'requests'),
       'jsonRequests' => array('\Securetrading\Stpp\JsonInterface\Factory', 'requests'),
+      '\Securetrading\Stpp\JsonInterface\Response' => array('\Securetrading\Stpp\JsonInterface\Factory', 'response'),
       '\Securetrading\Stpp\JsonInterface\Phrasebook' => array('\Securetrading\Stpp\JsonInterface\Factory', 'phrasebook'),
       '\Securetrading\Stpp\JsonInterface\Translator' => array('\Securetrading\Stpp\JsonInterface\Factory', 'translator'),
     ),

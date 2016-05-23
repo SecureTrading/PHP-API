@@ -11,11 +11,13 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
   private $_stubIoc;
 
   private $_stubConfig;
-  
+
+  private $_stubLog;
+
   protected function _newRequest() {
     $ioc = $this->getMock('\Securetrading\Ioc\Ioc');
     $ioc
-      ->expects($this->once())
+      ->expects($this->any())
       ->method('getSingleton')
       ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
       ->willReturn($this->getMock('\Securetrading\Stpp\JsonInterface\Log'))
@@ -26,7 +28,7 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
   protected function _newRequests() {
     $ioc = $this->getMock('\Securetrading\Ioc\Ioc');
     $ioc
-      ->expects($this->once())
+      ->expects($this->any())
       ->method('getSingleton')
       ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
       ->willReturn($this->getMock('\Securetrading\Stpp\JsonInterface\Log'))
@@ -37,6 +39,13 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
   public function setUp() {
     $this->_stubIoc = $this->getMock('\Securetrading\Ioc\Ioc');
     $this->_stubConfig = $this->getMock('\Securetrading\Stpp\JsonInterface\Config');
+    $this->_stubLog = $this->getMock('\Securetrading\Stpp\JsonInterface\Log');
+
+    $this->_stubIoc
+      ->method('getSingleton')
+      ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
+      ->willReturn($this->_stubLog)
+    ;
 
     $this->_api = new \Securetrading\Stpp\JsonInterface\Api($this->_stubIoc, $this->_stubConfig);
   }
@@ -51,10 +60,9 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
    * 
    */
   public function testProcess_WhenExceptionCaught_Logs() {
-    $logMock = $this->getMock('\Securetrading\Stpp\JsonInterface\Log');
     $stubExceptionMapper = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\ExceptionMapper')->disableOriginalConstructor()->getMock();
     $stubRequest = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
-    $response = new \Securetrading\Stpp\JsonInterface\Response();
+    $response = new \Securetrading\Stpp\JsonInterface\Response($this->_stubIoc);
     $translatorStub = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Translator')->disableOriginalConstructor()->getMock();
 
     $returnValueMap = array(
@@ -68,20 +76,13 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
       ->method('get')
       ->will($this->returnValueMap($returnValueMap));
     ;
-    
-    $this->_stubIoc
-      ->expects($this->any())
-      ->method('getSingleton')
-      ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
-      ->willReturn($logMock)
-    ;
 
     $stubRequest
       ->method('getSingle')
       ->will($this->throwException(new \Exception('exception_message', 5)))
     ;
 
-    $logMock
+    $this->_stubLog
       ->expects($this->exactly(2))
       ->method('alert')
       ->withConsecutive(
@@ -139,7 +140,7 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   public function provider_verifyRequest_WithInvalidRequest() {
-    $this->_addDataSet(new \Securetrading\Stpp\JsonInterface\Response());
+    $this->_addDataSet(new \stdClass());
     return $this->_getDataSets();
   }
 
@@ -260,7 +261,7 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
    * 
    */
   public function test_verifyResult() {
-    $stubResponse = $this->getMock('\Securetrading\Stpp\JsonInterface\Response');
+    $stubResponse = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Response')->disableOriginalConstructor()->getMock();
     $stubResponse
       ->method('getSingle')
       ->with($this->equalTo('requestreference'))
@@ -277,7 +278,7 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
    * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\ApiException::CODE_MISMATCHING_REQUEST_REFERENCE
    */
   public function test_verifyResult_WithMismatchingRequestReferences() {
-    $stubResponse = $this->getMock('\Securetrading\Stpp\JsonInterface\Response');
+    $stubResponse = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Response')->disableOriginalConstructor()->getMock();
     $stubResponse
       ->method('getSingle')
       ->with($this->equalTo('requestreference'))
@@ -293,7 +294,7 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
   public function test_generateError() {
     $exceptionMapperStub = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\ExceptionMapper')->disableOriginalConstructor()->getMock();
 
-    $responseObject = new \Securetrading\Stpp\JsonInterface\Response();
+    $responseObject = new \Securetrading\Stpp\JsonInterface\Response($this->_stubIoc);
 
     $returnValueMap = array(
       array('\Securetrading\Stpp\JsonInterface\ExceptionMapper', array(), $exceptionMapperStub),
@@ -336,15 +337,7 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
    *
    */
   public function test_getLog() {
-    $this->_stubIoc
-      ->expects($this->once())
-      ->method('getSingleton')
-      ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
-      ->willReturn('dummy_return_log_object')
-    ;
-
     $actualReturnValue = $this->_($this->_api, '_getLog');
-
-    $this->assertEquals('dummy_return_log_object', $actualReturnValue);
+    $this->assertSame($this->_stubLog, $actualReturnValue);
   }
 }

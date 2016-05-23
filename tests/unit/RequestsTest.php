@@ -12,7 +12,7 @@ class RequestsTest extends \Securetrading\Unittest\UnittestAbstract {
   public function setUp() {
     $iocMock = $this->getMockForAbstractClass('\Securetrading\Ioc\IocInterface');
     $iocMock
-      ->expects($this->once())
+      ->expects($this->any())
       ->method('getSingleton')
       ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
       ->willReturn($this->getMock('\Securetrading\Stpp\JsonInterface\Log'))

@@ -158,7 +158,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
   private function _processRequest(array $configData, array $requestData) {    
     $request = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\Request');
     $request->setMultiple($requestData);
-
+    
     $api = $this->_newInstance($configData);
     $response = $api->process($request);
 
@@ -1576,7 +1576,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 
     $contents = file_get_contents($this->_testDir . 'logs' . DIRECTORY_SEPARATOR . 'json_log.txt');
     $lines = explode(PHP_EOL, $contents);
-
+    
     $this->assertEquals("", array_pop($lines)); # Remove the last line (it is an empty line; but assert this for sanity).
 
     $requestReferences = array();
@@ -1600,23 +1600,47 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 
   public function providerLogging() {
     $this->_addDataSet(array(
+      array('DEBUG', 'Setting requestreference.'),
+      array('DEBUG', 'Setting accounttypedescription.'),
+      array('DEBUG', 'Setting currencyiso3a.'),
+      array('DEBUG', 'Setting baseamount.'),
+      array('DEBUG', 'Setting customerfirstname.'),
+      array('DEBUG', 'Setting requesttypedescriptions.'),
+      array('DEBUG', 'Setting sitereference.'),
+      array('DEBUG', 'Setting pan.'),
+      array('DEBUG', 'Setting expirymonth.'),
+      array('DEBUG', 'Setting expiryyear.'),
+      array('DEBUG', 'Setting securitycode.'),
+      array('DEBUG', 'Setting paymenttypedescription.'),
+      array('DEBUG', 'Setting requestreference.'), # Note - duplicate log entries start here - they are added when converting character encoding in Api.
+      array('DEBUG', 'Setting accounttypedescription.'),
+      array('DEBUG', 'Setting currencyiso3a.'),
+      array('DEBUG', 'Setting baseamount.'),
+      array('DEBUG', 'Setting customerfirstname.'),
+      array('DEBUG', 'Setting requesttypedescriptions.'),
+      array('DEBUG', 'Setting sitereference.'),
+      array('DEBUG', 'Setting pan.'),
+      array('DEBUG', 'Setting expirymonth.'),
+      array('DEBUG', 'Setting expiryyear.'),
+      array('DEBUG', 'Setting securitycode.'),
+      array('DEBUG', 'Setting paymenttypedescription.'), # Note - duplicate log entries end  here - they are added when converting character encoding in Api.
       array('INFO', 'Starting request.'),
       array('DEBUG', 'Starting encoding.'),
       array('DEBUG', 'Instance of \Securetrading\Stpp\JsonInterface\Request detected.'),
       array('DEBUG', 'Finished encoding.'),
       array('DEBUG', 'Starting encoding.'),
+      array('DEBUG', 'Setting requestreference.'),
+      array('DEBUG', 'Setting version.'),
+      array('DEBUG', 'Setting responses.'),
       array('DEBUG', 'Finished decoding.'),
       array('INFO', 'Finished request.'),
     ), null);
 
     $this->_addDataSet(array(
-      array('DEBUG', 'Starting encoding.'),
-      array('DEBUG', 'Instance of \Securetrading\Stpp\JsonInterface\Request detected.'),
-      array('DEBUG', 'Finished encoding.'),
-      array('DEBUG', 'Starting encoding.'),
-      array('DEBUG', 'Finished decoding.'),
-    ), \Securetrading\Log\Filter::DEBUG);
-
+      array('INFO', 'Starting request.'),
+      array('INFO', 'Finished request.'),
+    ), \Securetrading\Log\Filter::INFO);
+    
     return $this->_getDataSets();
   }
 }

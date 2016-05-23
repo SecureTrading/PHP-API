@@ -2,11 +2,12 @@
 
 namespace Securetrading\Stpp\JsonInterface;
 
-abstract class AbstractRequest extends \Securetrading\Data\Data {
+abstract class AbstractRequest extends AbstractData {
   public function __construct(\Securetrading\Ioc\IocInterface $ioc) {
     $requestReference = $this->_generateRandomRequestReference();
-    $this->setSingle('requestreference', $requestReference);
     $ioc->getSingleton('\Securetrading\Stpp\JsonInterface\Log')->setRequestReference($requestReference);
+    parent::__construct($ioc);
+    $this->setSingle('requestreference', $requestReference);
   }
 
   protected function _generateRandomRequestReference() {

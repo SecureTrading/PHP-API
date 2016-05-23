@@ -131,7 +131,7 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
   public function testDecode($jsonStringResponse, $expectedResponseData) {
     $this->_stubIocToReturnLog();
 
-    $responseObject = new \Securetrading\Stpp\JsonInterface\Response();
+    $responseObject = new \Securetrading\Stpp\JsonInterface\Response($this->_stubIoc);
 
     $this->_stubIoc
       ->method('get')
@@ -242,7 +242,7 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
     $this->_stubIoc
       ->method('get')
       ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Response'))
-      ->willReturn(new \Securetrading\Stpp\JsonInterface\Response())
+      ->willReturn($this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Response')->disableOriginalConstructor()->getMock())
     ;
 
     $this->_stubLog
