@@ -54,12 +54,16 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
 	),
       );
 
+      $log = $inputArg['log'];
+      unset($inputArg['log']);
+
       // Note - These two lines are too brittle.  Relies on order of headers/array keys and will require updating every release (because of the framework version).
       $versionInfoHeader = array_pop($inputArg['config']['http_headers']);
       $userAgent = array_pop($inputArg['config']);
-
+      
       return (
         $inputArg === $expectedIocParams
+	&& $log === 'stub_log'
         && preg_match('/^VERSIONINFO: PHP::.+::1.0.0::.+$/', $versionInfoHeader)
         && preg_match('/^PHP-.+$/', $userAgent)
       );
@@ -69,6 +73,12 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
       ->method('get')
       ->with($this->equalTo('\Securetrading\Http\Curl'), $this->callback($validateCallback))
       ->willReturn($this->_stubCurl)
+    ;
+
+    $this->_stubIoc
+      ->method('getSingleton')
+      ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
+      ->willReturn('stub_log')
     ;
 
     $returnValue = $this->_http->send('json_request_string', 'request_reference', 'url');

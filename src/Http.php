@@ -29,7 +29,7 @@ class Http {
       'user_agent' => sprintf('PHP-%s', PHP_VERSION),
     ));
 
-    $curl = $this->_ioc->get('\Securetrading\Http\Curl', array('config' => $config));
+    $curl = $this->_ioc->get('\Securetrading\Http\Curl', array('log' => $this->_ioc->getSingleton('\Securetrading\Stpp\JsonInterface\Log'), 'config' => $config));
 
     try {
       $jsonResponseString = $curl->post($jsonRequestString);

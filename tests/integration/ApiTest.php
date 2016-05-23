@@ -1593,7 +1593,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     foreach($expectedLines as $line) {
       $logLevel = preg_quote($line[0]);
       $logMessage = preg_quote($line[1]);
-      $regex = "/.+${logLevel}.+${logMessage}/";
+      $regex = "!.+${logLevel}.+${logMessage}!";
       $this->assertEquals(1, preg_match($regex, $contents), sprintf('Trying to match %s.', $regex));
     }
   }
@@ -1628,7 +1628,9 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
       array('DEBUG', 'Starting encoding.'),
       array('DEBUG', 'Instance of \Securetrading\Stpp\JsonInterface\Request detected.'),
       array('DEBUG', 'Finished encoding.'),
-      array('DEBUG', 'Starting encoding.'),
+      array('INFO', 'Beginning HTTP request to https://webservices.securetrading.net/json/.'),
+      array('INFO', 'Finished HTTP request to https://webservices.securetrading.net/json/.'),
+      array('DEBUG', 'Starting decoding.'),
       array('DEBUG', 'Setting requestreference.'),
       array('DEBUG', 'Setting version.'),
       array('DEBUG', 'Setting responses.'),
@@ -1638,6 +1640,8 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 
     $this->_addDataSet(array(
       array('INFO', 'Starting request.'),
+      array('INFO', 'Beginning HTTP request to https://webservices.securetrading.net/json/.'),
+      array('INFO', 'Finished HTTP request to https://webservices.securetrading.net/json/.'),
       array('INFO', 'Finished request.'),
     ), \Securetrading\Log\Filter::INFO);
     
