@@ -26,6 +26,9 @@ class Http {
     $config = array_replace($this->_config->toArray(), array(
       'url' => $url,
       'http_headers' => $this->_httpHeaders,
+      'curl_options' => array(
+        CURLOPT_ENCODING => 'gzip',
+      ),
       'user_agent' => sprintf('PHP-%s', PHP_VERSION),
     ));
 

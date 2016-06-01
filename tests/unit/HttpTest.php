@@ -51,9 +51,12 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
 	    'Connection: close',
 	    'requestreference: request_reference',
 	  ),
+	  'curl_options' => array(
+            CURLOPT_ENCODING => 'gzip',
+          ),
 	),
       );
-
+      
       $log = $inputArg['log'];
       unset($inputArg['log']);
 
