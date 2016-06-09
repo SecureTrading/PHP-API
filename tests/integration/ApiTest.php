@@ -774,7 +774,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     sleep($this->_sleepSeconds);
     
     list($configData, $requestData, $expectedResponseData) = $transactionQuery;
-    $requestData['filter']['transactionreference'] = $transactionReference;
+    $requestData['filter']['transactionreference'] = array('value' => $transactionReference, 'symbol' => 'IS');
     $expectedResponseData['responses'][0]['records'][0]['transactionreference'] = $transactionReference;
     $actualResponseData = $this->_processRequest($configData, $requestData);
     $this->_assertResponseData($expectedResponseData, $actualResponseData);
@@ -841,7 +841,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     sleep($this->_sleepSeconds);
     
     list($configData, $requestData, $expectedResponseData) = $transactionUpdate;
-    $requestData['filter']['transactionreference'] = $transactionReference;
+    $requestData['filter']['transactionreference'] = array('value' => $transactionReference, 'symbol' => 'IS');
     $actualResponseData = $this->_processRequest($configData, $requestData);
     $this->_assertResponseData($expectedResponseData, $actualResponseData);
   }
