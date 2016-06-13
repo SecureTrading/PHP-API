@@ -31,7 +31,6 @@ class ConfigTest extends \Securetrading\Unittest\UnittestAbstract {
     $expectedReturnValue = array(
       'datacenterurl' => 'https://webservices.securetrading.net',
       'jsonversion' => '1.00',
-      'input_encoding' => 'iso8859-1',
       'locale' => 'en_GB',
     );
     $actualReturnValue = $this->_newInstance()->toArray();
@@ -50,7 +49,6 @@ class ConfigTest extends \Securetrading\Unittest\UnittestAbstract {
     $expectedReturnValue = array(
       'datacenterurl' => 'https://webservices.securetrading.net',
       'jsonversion' => '1.00',
-      'input_encoding' => 'iso8859-1',
       'locale' => 'fr_FR',
       'new_key' => 'new_value',
     );

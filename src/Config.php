@@ -8,7 +8,6 @@ class Config implements ConfigInterface {
   protected $_defaults = array(
     'datacenterurl' => 'https://webservices.securetrading.net',
     'jsonversion' => '1.00',
-    'input_encoding' => 'iso8859-1',
     'locale' => 'en_GB',
   );
 

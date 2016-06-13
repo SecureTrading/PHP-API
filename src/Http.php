@@ -43,7 +43,7 @@ class Http {
     
     if (($httpResponseCode = $curl->getResponseCode()) !== 200) {
       $code = HttpException::CODE_GENERIC_INVALID_HTTP_STATUS;
-      $message = sprintf('Unexpected HTTP response code: %s.', $httpResponseCode);
+      $message = sprintf('HTTP code %s.', $httpResponseCode);
       if ($httpResponseCode === 401) {
 	$code = HttpException::CODE_401_INVALID_HTTP_STATUS;
       }

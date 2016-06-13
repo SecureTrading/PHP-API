@@ -40,7 +40,23 @@ class TranslatorTest extends \Securetrading\Unittest\UnittestAbstract {
     $this->_phrasebookStub
       ->expects($this->once())
       ->method('lookup')
-      ->with($this->equalTo('English message.'))
+      ->with($this->equalTo('English message.'), $this->equalTo('locale'))
+      ->willReturn('Translated message.')
+    ;
+
+    $translator = $this->_newInstance(array('code1' => 'English message.'));
+    $actualReturnValue = $translator->translate('code1', 'default_message', 'locale');
+    $this->assertEquals('Translated message.', $actualReturnValue);
+  }
+
+  /**
+   *
+   */
+  public function testTranslate_WhenCodeInMessages_AndLocaleNotSet() {
+    $this->_phrasebookStub
+      ->expects($this->once())
+      ->method('lookup')
+      ->with($this->equalTo('English message.'), $this->equalTo(null))
       ->willReturn('Translated message.')
     ;
 

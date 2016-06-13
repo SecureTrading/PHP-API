@@ -20,7 +20,6 @@ class Api {
       $httpClient = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\Http', array($this->_ioc, $this->_config));
 
       $request = $this->_verifyRequest($request);
-      $this->_convertCharacterEncodingOfRequest($request);
 
       $requestReference = $request->getSingle('requestreference');
       $this->_getLog()->info("Starting request.");
@@ -57,30 +56,6 @@ class Api {
       throw new ApiException('Invalid request type.', ApiException::CODE_INVALID_REQUEST_TYPE);
     }
     return $request;
-  }
-
-  protected function _convertData($data) {
-    if (is_array($data) || $data instanceof \Traversable) {
-      foreach($data as $k => $v) {
-	$data[$k] = $this->_convertData($v);
-      }
-      $returnValue = $data;
-    }
-    else {
-      $returnValue = iconv($this->_config->get('input_encoding'), 'utf-8', $data);
-    }
-    return $returnValue;
-  }
-
-  protected function _convertCharacterEncodingOfRequest(\Securetrading\Stpp\JsonInterface\AbstractRequest $request) {
-    if ($request instanceof \Securetrading\Stpp\JsonInterface\Requests) {
-      foreach($request->getRequests() as $request) {
-	$this->_convertData($request);
-      }
-    }
-    else {
-      $this->_convertData($request);
-    }
   }
 
   protected function _getUrl(AbstractRequest $request) {

@@ -5,8 +5,6 @@ namespace Securetrading\Stpp\JsonInterface\Tests\Integration;
 class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
   private $_api;
 
-  private $_specialCharsString;
-
   private $_sleepSeconds;
 
   private $_siteReference;
@@ -31,7 +29,6 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 
     //'datacenterurl' => '',
     //'jsonversion' => '',
-    //'input_encoding' => '',
 
     //'log_filename' => '',
     //'log_filepath' => '',
@@ -45,7 +42,6 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	'accounttypedescription' => 'ECOM',
 	'currencyiso3a' => 'GBP',
 	'baseamount' => '100',
-	'customerfirstname' => $this->_specialCharsString,
       ),
       'CACHETOKENISE' => array(
         'pan' => '4111110000000211',
@@ -60,7 +56,6 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
       'ORDER' => array(
 	'accounttypedescription' => 'ECOM',
 	'paymenttypedescription' => 'PAYPAL',
-	'billingfirstname' => $this->_specialCharsString,
 	'customerfirstname' => 'Tester',
 	'customerlastname' => 'Jones',
 	'customerpremise' => '1234',
@@ -78,27 +73,23 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	'accounttypedescription' => 'ECOM',
 	'currencyiso3a' => 'GBP',
 	'baseamount' => '0',
-	'customerfirstname' => $this->_specialCharsString,
       ),
       'THREEDQUERY' => array(
 	'accounttypedescription' => 'ECOM',
 	'currencyiso3a' => 'GBP',
 	'termurl' => 'https://www.termurl.com',
 	'baseamount' => '100',
-	'customerfirstname' => $this->_specialCharsString,
       ),
       'CURRENCYRATE' => array(
 	'accounttypedescription' => 'CURRENCYRATE',
 	'dcccurrencyiso3a' => 'USD',
 	'dccbaseamount' => '100',
 	'dcctype' => 'DCC',
-	'customerfirstname' => $this->_specialCharsString,
       ),
       'RISKDEC' => array(
 	'accounttypedescription' => 'FRAUDCONTROL',
 	'currencyiso3a' => 'GBP',
 	'baseamount' => '100',
-	'customerfirstname' => $this->_specialCharsString,
       ),
       'IDSTANDARD' => array(
 	'accounttypedescription' => 'IDENTITYCHECK',
@@ -133,7 +124,6 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     
     $testConfig = $this->_helper->parseIniFile(realpath(__DIR__ . '/../config.ini'), array('username', 'password', 'siteReference'));
 
-    $this->_specialCharsString = "T\r\xc2\xa3S'T(|]><[\\xG %s %% \"+N\\\\\&\\M\xc8.?\nTAB\t12}34{56789,:;#END";
     $this->_sleepSeconds = 2;
     $this->_siteReference = $testConfig['siteReference'];
     $this->_username = $testConfig['username'];
@@ -1264,14 +1254,12 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	  )
 	),
         $this->getDefaultTransactionData('CACHETOKENISE'),
-	//TODO-should this test return errcode 6?
-	//TODO-assert the errordata concents on these non-0 errorcode tests
 	array(
 	  'responses' => array(
             array(
-	      'errorcode' => '8',
-	      'errormessage' => 'Unexpected error connecting to Secure Trading servers. If the problem persists please contact support@securetrading.com',
-	      'errordata' => array(),
+	      'errorcode' => '6',
+	      'errormessage' => 'Invalid credentials provided',
+	      'errordata' => array('HTTP code 401.'),
 	      'requesttypedescription' => 'ERROR',
 	    ),
 	  ),
@@ -1282,9 +1270,9 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
   }
 
   /**
-   * @dataProvider providerEncoding
+   * 
    */
-  public function testEncoding($specialCharString, $fromEncoding) {
+  public function testRequest_WithInvalidUtf8RequestData() {
     $configData = self::$_defaultConfigArray;
     $requestData = array_merge(
       $this->getDefaultTransactionData('AUTH'),
@@ -1294,27 +1282,20 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	'expiryyear' => '2031',
 	'securitycode' => '123',
 	'paymenttypedescription' => 'VISA',
+	'billingfirstname' => "\xC0\x00", # A leading UTF-8 byte without a valid continuation byte.
       )
     );
     $expectedResponseData = array(
       'responses' => array(
         array(
-	  'errorcode' => '0',	      
-	  'errormessage' => 'Ok',
-	  'acquirerresponsecode' => '00',
+	  'errorcode' => '9',
+	  'errormessage' => 'Unknown error. If this persists please contact Secure Trading',
 	),
       )
     );
-
-    $requestData['customerfirstname'] = $specialCharString;
     
     $actualResponseData = $this->_processRequest($configData, $requestData);
     $this->_assertResponseData($expectedResponseData, $actualResponseData);
-  }
-
-  public function providerEncoding() {
-    $this->_addDataSet($this->_specialCharsString, 'iso8859-1');
-    return $this->_getDataSets();
   }
 
   /**
@@ -1604,7 +1585,6 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
       array('DEBUG', 'Setting accounttypedescription.'),
       array('DEBUG', 'Setting currencyiso3a.'),
       array('DEBUG', 'Setting baseamount.'),
-      array('DEBUG', 'Setting customerfirstname.'),
       array('DEBUG', 'Setting requesttypedescriptions.'),
       array('DEBUG', 'Setting sitereference.'),
       array('DEBUG', 'Setting pan.'),
@@ -1612,18 +1592,6 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
       array('DEBUG', 'Setting expiryyear.'),
       array('DEBUG', 'Setting securitycode.'),
       array('DEBUG', 'Setting paymenttypedescription.'),
-      array('DEBUG', 'Setting requestreference.'), # Note - duplicate log entries start here - they are added when converting character encoding in Api.
-      array('DEBUG', 'Setting accounttypedescription.'),
-      array('DEBUG', 'Setting currencyiso3a.'),
-      array('DEBUG', 'Setting baseamount.'),
-      array('DEBUG', 'Setting customerfirstname.'),
-      array('DEBUG', 'Setting requesttypedescriptions.'),
-      array('DEBUG', 'Setting sitereference.'),
-      array('DEBUG', 'Setting pan.'),
-      array('DEBUG', 'Setting expirymonth.'),
-      array('DEBUG', 'Setting expiryyear.'),
-      array('DEBUG', 'Setting securitycode.'),
-      array('DEBUG', 'Setting paymenttypedescription.'), # Note - duplicate log entries end  here - they are added when converting character encoding in Api.
       array('INFO', 'Starting request.'),
       array('DEBUG', 'Starting encoding.'),
       array('DEBUG', 'Instance of \Securetrading\Stpp\JsonInterface\Request detected.'),
