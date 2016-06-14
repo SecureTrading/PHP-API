@@ -159,6 +159,17 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     return $actualResponseData;
   }
 
+  private function _processRawRequest(array $configData, array $requestData) {        
+    $api = $this->_newInstance($configData);
+    $response = $api->process($requestData);
+
+    $this->assertInstanceOf('\Securetrading\Stpp\JsonInterface\Response', $response);
+
+    $actualResponseData = $response->toArray();
+
+    return $actualResponseData;
+  }
+
   private function _processRequests(array $configData, array $requestsData) {    
     $requests = $this->_ioc->get('\Securetrading\Stpp\JsonInterface\Requests');
     
@@ -1613,6 +1624,43 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
       array('INFO', 'Finished request.'),
     ), \Securetrading\Log\Filter::INFO);
     
+    return $this->_getDataSets();
+  }
+
+  /**
+   * @dataProvider providerRawRequest
+   */
+  public function testRawRequest($auth) {
+    list($configData, $requestData, $expectedResponseData) = $auth;
+    $actualResponseData = $this->_processRawRequest($configData, $requestData);
+    $this->_assertResponseData($expectedResponseData, $actualResponseData);
+  }
+
+  public function providerRawRequest() {
+    $this->_addDataSet(
+      array(
+        self::$_defaultConfigArray,
+	array_merge(
+          $this->getDefaultTransactionData('AUTH'),
+	  array(
+	    'pan' => '4111110000000211',
+	    'expirymonth' => '11',
+	    'expiryyear' => '2031',
+	    'securitycode' => '123',
+	    'paymenttypedescription' => 'VISA',
+	  )
+	),
+	array(
+	  'responses' => array(
+            array(
+	      'errorcode' => '0',	      
+	      'errormessage' => 'Ok',
+	      'acquirerresponsecode' => '00',
+	    ),
+	  ),
+        ),
+      )
+    );    
     return $this->_getDataSets();
   }
 }
