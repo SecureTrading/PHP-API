@@ -30,8 +30,12 @@ class AbstractRequestTest extends \Securetrading\Unittest\UnittestAbstract {
    * 
    */
   public function test_generateRandomRequestReference() {
+    $requestReferences = array();
     for ($i = 0; $i < 1000; $i++) {
-      $this->assertRegExp(self::REQUEST_REFERENCE_REGEXP, $this->_($this->_abstractRequest, '_generateRandomRequestReference'));
+      $requestReference = $this->_($this->_abstractRequest, '_generateRandomRequestReference');
+      $this->assertRegExp(self::REQUEST_REFERENCE_REGEXP, $requestReference);
+      $requestReferences[] = $requestReference;
     }
+    $this->assertEquals(1000, count(array_unique($requestReferences)));
   }
 }

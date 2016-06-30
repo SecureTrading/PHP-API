@@ -269,7 +269,7 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
    */
   public function testDecode_WhenCannotJsonDecodeRequest() {
     $this->_stubIocToReturnLog();
-    $this->_converter->decode("BADJSONSTRING", "DUMMY_REQUEST_REFERENCE");
+    $this->_converter->decode("BADJSONSTRING");
   }
 
   /**

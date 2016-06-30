@@ -38,20 +38,11 @@ class RequestTest extends \Securetrading\Unittest\UnittestAbstract {
       "Valid data."
     );
     $this->_addDataSet(
-      "eyJkYXRhY2VudGVydXJsIjogImh0dHBzOi8vd2Vic2VydmljZXMuc2VjdXJldHJhZGluZy5uZXQiLCAiY2FjaGV0b2tlbiI6ICIxNy02YTAyODdkZDA0NDk3YmE4ZGFiMjU3YWNiZDk4Mzc0MWY1NTQxMGI1YzcwOTQ2MzdkOGMzZjBm\
-YjU3YmQyNWVjIn0=",
-      array(
-        "datacenterurl" => "https://webservices.securetrading.net",
-	"cachetoken" => "17-6a0287dd04497ba8dab257acbd983741f55410b5c7094637d8c3f0fb57bd25ec",
-      ),
-      "Valid data."
-    );
-    $this->_addDataSet(
       "17-6a0287dd04497ba8dab257acbd983741f55410b5c7094637d8c3f0fb57bd25ec",
       array(
         "cachetoken" => "17-6a0287dd04497ba8dab257acbd983741f55410b5c7094637d8c3f0fb57bd25ec",
       ),
-      "Garbage string - is not base64 decoded into a valid stringified JSON object."
+      "A literal cache token - is not base64 decoded into a valid stringified JSON object."
     );
     $this->_addDataSet(
       "eyJkYXRhY2VudGVydXJsIjogImh0dHBzOi8vd2Vic2VydmljZXMuc2VjdXJldHJhZGluZy5uZXQiLCAiY2FjaGV0b2tlbiI6ICIxNy1hZTdlNTExMTcy",
