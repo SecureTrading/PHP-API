@@ -1393,7 +1393,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
       'responses' => array(
 	array(
 	  'errorcode' => '0',
-	  'errormessage' => 'D\'accord',
+	  'errormessage' => 'OK', // Note - french translation now the same as the english.
 	),
       )
     );
@@ -1437,7 +1437,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
       'responses' => array(
 	array(
 	  'errorcode' => '10',
-	  'errormessage' => 'Une utilisation incorrecte de l\'API Secure Trading',
+	  'errormessage' => 'Utilisation incorrecte de l\'API Secure Trading',
 	),
       )
     );
@@ -1480,12 +1480,12 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	  'responses' => array(
             array(
 	      'errorcode' => '0',
-	      'errormessage' => 'D\'accord',
+	      'errormessage' => 'OK', // Note - french translation now the same as the english.
 	      'requesttypedescription' => 'ACCOUNTCHECK',
 	    ),
 	    array(
 	      'errorcode' => '0',
-	      'errormessage' => 'D\'accord',
+	      'errormessage' => 'OK', // Note - french translation now the same as the english.
 	      'requesttypedescription' => 'SUBSCRIPTION',
 	    ),
 	  ),
