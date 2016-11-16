@@ -4,7 +4,7 @@
 
 Install this library using Composer.  From the root directory of your application just run:
 
-    composer install securetrading/stpp_json
+    composer require securetrading/stpp_json
     
 # Documentation
 
