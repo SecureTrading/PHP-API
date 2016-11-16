@@ -13,3 +13,7 @@ Please refer to http://www.securetrading.com/support/document/category/web-servi
 # Bugs
 
 Please report any bugs to devapi@securetrading.com.
+
+# Usage
+
+See examples/ in this repository for an example of how to use this API.
