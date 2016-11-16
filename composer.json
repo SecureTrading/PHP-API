@@ -1,6 +1,6 @@
 {
   "name" : "securetrading/stpp_json",
-  "version" : "0.0.1-beta",
+  "version" : "1.0.0",
   "description" : "Secure Trading's JSON API.",
   "license" : "MIT",
   "require" : {
@@ -18,7 +18,6 @@
     "squizlabs/php_codesniffer": "2.*",
     "phpbench/phpbench": "^0.1.0"
   },
-  "minimum-stability" : "dev",
   "autoload" : {
     "psr-4" : {
       "Securetrading\\Stpp\\JsonInterface\\" : "src/"
