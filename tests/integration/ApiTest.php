@@ -1574,7 +1574,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     $requestReferences = array();
 
     foreach($lines as $line) {
-      $this->assertEquals(1, preg_match("/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2} UTC - [A-Z]+ - (A[0123456789abcdefghjkmnpqrtuvwxy]{8}) - .+$/", $line, $matches));
+      $this->assertEquals(1, preg_match("/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2} [A-Z]{3} - [A-Z]+ - (A[0123456789abcdefghjkmnpqrtuvwxy]{8}) - .+$/", $line, $matches));
       $requestReferences[] = $matches[1];
     }
 
