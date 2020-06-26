@@ -9,7 +9,7 @@ class TranslatorTest extends \Securetrading\Unittest\UnittestAbstract {
 
   private $_logStub;
 
-  public function setUp() {
+  public function setUp() : void {
     $this->_phrasebookStub = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Phrasebook')->disableOriginalConstructor()->getMock();
     $this->_logStub = $this->getMockForAbstractClass('\Psr\Log\LoggerInterface');
   }

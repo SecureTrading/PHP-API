@@ -17,6 +17,6 @@ abstract class AbstractRequest extends AbstractData {
       ),
       8
     );
-    return 'A' . implode($randomChars, '');
+    return 'A' . implode('', $randomChars);
   }
 }

@@ -5,8 +5,8 @@ namespace Securetrading\Stpp\JsonInterface\Tests\Unit;
 use org\bovigo\vfs\vfsStream;
 
 class PhrasebookTest extends \Securetrading\Unittest\UnittestAbstract {
-  public function setUp() {
-    $this->_configStub = $this->getMock('\Securetrading\Stpp\JsonInterface\Config');
+  public function setUp() : void {
+    $this->_configStub = $this->createMock('\Securetrading\Stpp\JsonInterface\Config');
     $this->_phrasebookMessages = array(
       'English message in phrasebook.' => array(
         'fr_FR' => 'French message.',

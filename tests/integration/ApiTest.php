@@ -135,7 +135,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     self::$_defaultConfigArray['password'] = $this->_password;
   }
 
-  public function setUp() {
+  public function setUp() : void {
     parent::setUp();
 
     $this->_ioc = \Securetrading\Stpp\JsonInterface\Main::bootstrapIoc();
@@ -359,7 +359,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	array_merge(
           $this->getDefaultTransactionData('AUTH'),
 	  array(
-            'bankid' => '987654321',
+        'bankid' => '987654321',
 	    'bankname' => 'FORTIS',
 	    'currencyiso3a' => 'EUR',
 	    'paymenttypedescription' => 'SOFORT',
@@ -370,6 +370,8 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	    'billingpremise' => '789',
 	    'billingstreet' => 'Street',
 	    'billingtown' => 'Town',
+        'successfulurlredirect' => 'https://trustpayments.com',
+        'errorurlredirect' => 'https://trustpayments.com',
 	  )
 	),
 	array(
@@ -722,33 +724,6 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	    'paymenttypedescription' => 'VISA',
 	  )
 	),
-	array(
-	  'responses' => array(
-            array(
-	      'errorcode' => '0',
-	      'errormessage' => 'Ok',
-	    ),
-	  ),
-	),
-      )
-    );    
-    return $this->_getDataSets();
-  }
-
-  /**
-   * @dataProvider providerIdentityCheck
-   */
-  public function testIdentityCheck($identityCheck) {
-    list($configData, $requestData, $expectedResponseData) = $identityCheck;
-    $actualResponseData = $this->_processRequest($configData, $requestData);
-    $this->_assertResponseData($expectedResponseData, $actualResponseData);
-  }
-
-  public function providerIdentityCheck() {
-    $this->_addDataSet(
-      array(
-        self::$_defaultConfigArray,
-        $this->getDefaultTransactionData('IDSTANDARD'),
 	array(
 	  'responses' => array(
             array(
@@ -1512,10 +1487,10 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 
     $errorData = $actualResponseData['responses'][0]['errordata'];
     $this->assertEquals($mainExceptionMessage, $errorData[0]); # Exception message.
-    $this->assertRegExp("/^.+ApiTest\.php$/", $errorData[1]); # Exception file.
+    $this->assertMatchesRegularExpression("/^.+ApiTest\.php$/", $errorData[1]); # Exception file.
     $this->assertTrue(is_int($errorData[2])); # Exception line number.
-    $this->assertRegExp("/^#0 \[internal function\].+$/m", $errorData[3]); # Exception stack trace.
-    $this->assertRegExp("/^.+Previous exception message\..+$/m", $errorData[4]); # Previous exception stack trace.
+    $this->assertMatchesRegularExpression("/^#0 \[internal function\].+$/m", $errorData[3]); # Exception stack trace.
+    $this->assertMatchesRegularExpression("/^.+Previous exception message\..+$/m", $errorData[4]); # Previous exception stack trace.
   }
 
   public function providerErrorData_ContainsExceptionData_WhenUnexpectedExceptionCaught() {

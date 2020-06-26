@@ -12,7 +12,7 @@ class ExceptionMapperTest extends \Securetrading\Unittest\UnittestAbstract {
 
   private $_exceptionMapper;
 
-  public function setUp() {
+  public function setUp() : void {
     $this->_exceptionMapper = new ExceptionMapper();
   }
 
@@ -95,9 +95,9 @@ class ExceptionMapperTest extends \Securetrading\Unittest\UnittestAbstract {
     $this->assertEquals(\Securetrading\Stpp\JsonInterface\ExceptionMapper::CODE_DEFAULT, $returnedErrorCode);
 
     $this->assertEquals('Message.', $returnedErrorData[0]); # Exception message.
-    $this->assertRegExp("/^.+ExceptionMapperTest\.php$/", $returnedErrorData[1]); # Exception file.
+    $this->assertMatchesRegularExpression("/^.+ExceptionMapperTest\.php$/", $returnedErrorData[1]); # Exception file.
     $this->assertTrue(is_int($returnedErrorData[2])); # Exception line number.
-    $this->assertRegExp("/^#0 \[internal function\].+$/m", $returnedErrorData[3]); # Exception stack trace.
-    $this->assertRegExp("/^.+Previous exception message\..+$/m", $returnedErrorData[4]); # Previous exception stack trace.
+    $this->assertMatchesRegularExpression("/^#0 .+/m", $returnedErrorData[3]); # Exception stack trace.
+    $this->assertMatchesRegularExpression("/^.+Previous exception message\..+$/m", $returnedErrorData[4]); # Previous exception stack trace.
   }
 }

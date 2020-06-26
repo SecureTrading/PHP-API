@@ -5,7 +5,7 @@ namespace Securetrading\Stpp\JsonInterface\Tests\Unit;
 class LogTest extends \Securetrading\Unittest\UnittestAbstract {
   protected $_log;
 
-  public function setUp() {
+  public function setUp() : void {
     $this->_log = new \Securetrading\Stpp\JsonInterface\Log();
   }
   
@@ -23,10 +23,12 @@ class LogTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   * @expectedException \Securetrading\Stpp\JsonInterface\LogException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\LogException::CODE_LOGGER_NOT_SET
+   * 
    */
   public function testGetLogger_IfNotSet() {
+    $this->expectException(\Securetrading\Stpp\JsonInterface\LogException::class);
+    $this->expectExceptionCode(\Securetrading\Stpp\JsonInterface\LogException::CODE_LOGGER_NOT_SET);
+    
     $this->_($this->_log, '_getLogger');
   }
 

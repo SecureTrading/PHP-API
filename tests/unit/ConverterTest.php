@@ -9,9 +9,9 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
   
   private $_stubIoc;
 
-  public function setUp() {
-    $this->_stubConfig = $this->getMock('\Securetrading\Stpp\JsonInterface\Config');
-    $this->_stubIoc = $this->getMock('\Securetrading\Ioc\Ioc');
+  public function setUp() : void {
+    $this->_stubConfig = $this->createMock('\Securetrading\Stpp\JsonInterface\Config');
+    $this->_stubIoc = $this->createMock('\Securetrading\Ioc\Ioc');
     $this->_stubLog = $this->getMockForAbstractClass('\Psr\Log\LoggerInterface');
     $this->_converter = new \Securetrading\Stpp\JsonInterface\Converter($this->_stubConfig, $this->_stubIoc);
   }
@@ -71,6 +71,7 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
 
   /**
    * @dataProvider providerEncode_Logging
+   * @doesNotPerformAssertions
    */
   public function testEncode_Logging($stubRequest, $logMessage) {
     $this->_stubIocToReturnLog();
@@ -101,10 +102,11 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
 
   /**
    * @dataProvider providerEncode_WithInvalidInput
-   * @expectedException \Securetrading\Stpp\JsonInterface\ConverterException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\ConverterException::CODE_ENCODE_INVALID_REQUEST_TYPE
    */
   public function testEncode_WithInvalidInput($input) {
+    $this->expectException(\Securetrading\Stpp\JsonInterface\ConverterException::class);
+    $this->expectExceptionCode(\Securetrading\Stpp\JsonInterface\ConverterException::CODE_ENCODE_INVALID_REQUEST_TYPE);
+      
     $this->_stubIocToReturnLog();
     $this->_converter->encode($input);
   }
@@ -115,10 +117,12 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   * @expectedException \Securetrading\Stpp\JsonInterface\ConverterException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\ConverterException::CODE_ENCODE_TO_JSON_FAILED
+   * 
    */
   public function testEncode_WhenCannotJsonEncodeRequest() {
+    $this->expectException(\Securetrading\Stpp\JsonInterface\ConverterException::class);
+    $this->expectExceptionCode(\Securetrading\Stpp\JsonInterface\ConverterException::CODE_ENCODE_TO_JSON_FAILED);
+    
     $this->_stubIocToReturnLog();
     $dummyRequest = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
     $dummyRequest->method('toArray')->willReturn(chr(193)); // Invalid UTF-8 char.
@@ -234,7 +238,7 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   * 
+   * @doesNotPerformAssertions
    */
   public function testDecode_Logging() {
     $this->_stubIocToReturnLog();
@@ -264,10 +268,12 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   * @expectedException \Securetrading\Stpp\JsonInterface\ConverterException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\ConverterException::CODE_DECODE_FROM_JSON_FAILED
+   * 
    */
   public function testDecode_WhenCannotJsonDecodeRequest() {
+    $this->expectException(\Securetrading\Stpp\JsonInterface\ConverterException::class);
+    $this->expectExceptionCode(\Securetrading\Stpp\JsonInterface\ConverterException::CODE_DECODE_FROM_JSON_FAILED);
+    
     $this->_stubIocToReturnLog();
     $this->_converter->decode("BADJSONSTRING");
   }

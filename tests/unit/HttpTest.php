@@ -11,9 +11,9 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
 
   private $_http;
 
-  public function setUp() {
-    $this->_stubIoc = $this->getMock('\Securetrading\Ioc\IocInterface');
-    $this->_stubConfig = $this->getMock('\Securetrading\Stpp\JsonInterface\Config');
+  public function setUp() : void {
+    $this->_stubIoc = $this->createMock('\Securetrading\Ioc\IocInterface');
+    $this->_stubConfig = $this->createMock('\Securetrading\Stpp\JsonInterface\Config');
     $this->_stubCurl = $this->getMockBuilder('\Securetrading\Http\Curl')->disableOriginalConstructor()->getMock();
     $this->_http = new \Securetrading\Stpp\JsonInterface\Http($this->_stubIoc, $this->_stubConfig);
 
@@ -90,10 +90,12 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   * @expectedException \Securetrading\Stpp\JsonInterface\HttpException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\HttpException::CODE_CURL_ERROR
+   * 
    */
   public function testSend_When401SendingThrewException() {
+    $this->expectException(\Securetrading\Stpp\JsonInterface\HttpException::class);
+    $this->expectExceptionCode(\Securetrading\Stpp\JsonInterface\HttpException::CODE_CURL_ERROR);
+    
     $this->_stubIoc
       ->method('get')
       ->willReturn($this->_stubCurl)
@@ -108,10 +110,12 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   * @expectedException \Securetrading\Stpp\JsonInterface\HttpException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\HttpException::CODE_401_INVALID_HTTP_STATUS
+   * 
    */
   public function testSend_When401HttpStatusReturned() {
+    $this->expectException(\Securetrading\Stpp\JsonInterface\HttpException::class);
+    $this->expectExceptionCode(\Securetrading\Stpp\JsonInterface\HttpException::CODE_401_INVALID_HTTP_STATUS);
+    
     $this->_stubIoc
       ->method('get')
       ->willReturn($this->_stubCurl)
@@ -126,10 +130,12 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   * @expectedException \Securetrading\Stpp\JsonInterface\HttpException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\HttpException::CODE_GENERIC_INVALID_HTTP_STATUS
+   * 
    */
   public function testSend_WhenOtherInvalidHttpStatusReturned() {
+    $this->expectException(\Securetrading\Stpp\JsonInterface\HttpException::class);
+    $this->expectExceptionCode(\Securetrading\Stpp\JsonInterface\HttpException::CODE_GENERIC_INVALID_HTTP_STATUS);
+    
     $this->_stubIoc
       ->method('get')
       ->willReturn($this->_stubCurl)

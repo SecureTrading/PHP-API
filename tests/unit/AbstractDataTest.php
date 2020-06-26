@@ -7,10 +7,10 @@ class AbstractDataTest extends \Securetrading\Unittest\UnittestAbstract {
 
   private $_abstractData;
 
-  public function setUp() {
-    $this->_logStub = $this->getMock('\Securetrading\Stpp\JsonInterface\Log');
+  public function setUp() : void {
+    $this->_logStub = $this->createMock('\Securetrading\Stpp\JsonInterface\Log');
 
-    $iocMock = $this->getMock('\Securetrading\Ioc\IocInterface');
+    $iocMock = $this->createMock('\Securetrading\Ioc\IocInterface');
     $iocMock
       ->expects($this->once())
       ->method('getSingleton')

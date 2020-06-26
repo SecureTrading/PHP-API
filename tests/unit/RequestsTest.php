@@ -9,13 +9,13 @@ class RequestsTest extends \Securetrading\Unittest\UnittestAbstract {
     return $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
   }
 
-  public function setUp() {
+  public function setUp() : void {
     $iocMock = $this->getMockForAbstractClass('\Securetrading\Ioc\IocInterface');
     $iocMock
       ->expects($this->any())
       ->method('getSingleton')
       ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
-      ->willReturn($this->getMock('\Securetrading\Stpp\JsonInterface\Log'))
+      ->willReturn($this->createMock('\Securetrading\Stpp\JsonInterface\Log'))
     ;
 
     $this->_requests = new \Securetrading\Stpp\JsonInterface\Requests($iocMock);
@@ -30,10 +30,11 @@ class RequestsTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   * @expectedException \Securetrading\Stpp\JsonInterface\RequestsException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\RequestsException::CODE_INDIVIDUAL_REQUEST_HAS_DATACENTERURL
+   * 
    */
   public function testAddRequest_WithDataCenterUrl() {
+    $this->expectException(\Securetrading\Stpp\JsonInterface\RequestsException::class);
+    $this->expectExceptionCode(\Securetrading\Stpp\JsonInterface\RequestsException::CODE_INDIVIDUAL_REQUEST_HAS_DATACENTERURL);
     $requestStub = $this->_getStubRequest();
     $requestStub->method('hasSingle')->with($this->equalTo('datacenterurl'))->willReturn(true);
     $returnValue = $this->_requests->addRequest($requestStub);

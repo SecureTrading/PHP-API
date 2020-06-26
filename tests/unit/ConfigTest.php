@@ -17,10 +17,12 @@ class ConfigTest extends \Securetrading\Unittest\UnittestAbstract {
   }
 
   /**
-   * @expectedException \Securetrading\Stpp\JsonInterface\ConfigException
-   * @expectedExceptionCode \Securetrading\Stpp\JsonInterface\ConfigException::CODE_KEY_NOT_FOUND
+   * 
    */
   public function testGet_WhenKeyNotSet() {
+    $this->expectException(\Securetrading\Stpp\JsonInterface\ConfigException::class);
+    $this->expectExceptionCode(\Securetrading\Stpp\JsonInterface\ConfigException::CODE_KEY_NOT_FOUND);
+      
     $this->_newInstance(array('k' => 'v'))->get('k2');
   }
 
