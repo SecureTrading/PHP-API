@@ -1,6 +1,6 @@
 {
   "name" : "securetrading/stpp_json",
-  "version" : "1.0.0",
+  "version" : "1.0.2",
   "description" : "Secure Trading's JSON API.",
   "license" : "MIT",
   "require" : {
@@ -15,8 +15,7 @@
   "require-dev" : {
     "securetrading/unittest" : "~1.0",
     "mikey179/vfsstream" : "1.5.0",
-    "squizlabs/php_codesniffer": "2.*",
-    "phpbench/phpbench": "^0.1.0"
+    "squizlabs/php_codesniffer": "2.*"
   },
   "autoload" : {
     "psr-4" : {
