@@ -7,7 +7,7 @@
     "php" : "^7.3",
     "securetrading/exception" : "^1.0.1",
     "securetrading/ioc" : "^2.0",
-    "securetrading/data" : "^1.0.1",
+    "securetrading/data" : "^2.0",
     "securetrading/log" : "^2.0",
     "securetrading/http" : "^2.0"
 
