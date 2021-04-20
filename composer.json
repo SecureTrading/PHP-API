@@ -1,15 +1,15 @@
 {
   "name" : "securetrading/stpp_json",
-  "version" : "2.0.0",
+  "version" : "3.0.0",
   "description" : "Secure Trading's JSON API.",
   "license" : "MIT",
   "require" : {
-    "php" : "^7.3",
+    "php" : "^8.0",
     "securetrading/exception" : "^1.0.1",
-    "securetrading/ioc" : "^2.0",
+    "securetrading/ioc" : "^3.0",
     "securetrading/data" : "^2.0",
-    "securetrading/log" : "^2.0",
-    "securetrading/http" : "^2.0"
+    "securetrading/log" : "^3.0",
+    "securetrading/http" : "^3.0"
 
   },
   "require-dev" : {

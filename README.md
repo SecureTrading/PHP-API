@@ -22,6 +22,7 @@ See examples/ in this repository for an example of how to use this API.
 
 | Version  | Changes              |
 | -------- |---------------       |
+| 3.0.0    | PHP 8 compat.        |
 | 2.0.0    | PHP 7.3+ compat.     |
 | 1.0.2    | PHP 7.0 patch.       |
 | 1.0.1    | TODO                 |
@@ -29,9 +30,10 @@ See examples/ in this repository for an example of how to use this API.
 
 ## PHP Version Compatibility
 
-| Version  | Changes                        |
-| -------- |---------------                 |
-| 2.0.0    | PHP 7.3 - PHP 7.4              |
-| 1.0.2    | PHP 7.0 - PHP 7.2              |
-| 1.0.1    | PHP 5.x                        |
-| 1.0.0    | PHP 5.x                        |
+| Version  | Changes                          |
+| -------- |---------------                   |
+| 3.0.0    | PHP 7.3 - 7.X, PHP 8.0.0 - 8.0.3 |
+| 2.0.0    | PHP 7.3 - PHP 7.4                |
+| 1.0.2    | PHP 7.0 - PHP 7.2                |
+| 1.0.1    | PHP 5.x                          |
+| 1.0.0    | PHP 5.x                          |
