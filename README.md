@@ -8,7 +8,7 @@ Install this library using Composer.  From the root directory of your applicatio
     
 # Documentation
 
-Please refer to http://www.securetrading.com/support/document/category/web-services/ for full documentation.
+Please refer to https://docs.trustpayments.com/document/webservices-api/getting-started/ for full documentation.
 
 # Bugs
 
