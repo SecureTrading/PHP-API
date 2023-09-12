@@ -9,6 +9,8 @@ class Main {
     $ioc = \Securetrading\Ioc\Helper::instance()
       ->addVendorDirs(\Securetrading\Loader\Loader::getRootPath())
       ->addEtcDirs(realpath(__DIR__ . '/../etc'))
+       ->addEtcDirs(realpath(__DIR__ . '/../../securetrading-http/etc'))
+       ->addEtcDirs(realpath(__DIR__ . '/../../securetrading-log/etc'))
       ->loadPackage('stStppJson')
       ->getIoc();
     
