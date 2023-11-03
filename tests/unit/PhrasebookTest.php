@@ -6,7 +6,7 @@ use org\bovigo\vfs\vfsStream;
 
 class PhrasebookTest extends \Securetrading\Unittest\UnittestAbstract {
   private $_configStub;
-  private $_phrasebookMessages
+  private $_phrasebookMessages;
 
   public function setUp() : void {
     $this->_configStub = $this->createMock('\Securetrading\Stpp\JsonInterface\Config');
