@@ -22,6 +22,7 @@ See examples/ in this repository for an example of how to use this API.
 
 | Version | Changes                                                                                               |
 |---------|-------------------------------------------------------------------------------------------------------|
+| 4.0.4   | Test and deprecation fixes.                                                                           |
 | 4.0.3   | PHP 8.2 compat.                                                                                       |
 | 4.0.2   | Update integration tests postcode values - gateways test logic was updated causing our tests to fail. |
 | 4.0.1   | Incorrect data ref                                                                                    |
@@ -36,6 +37,7 @@ See examples/ in this repository for an example of how to use this API.
 
 | Version | Changes                            |
 |---------|------------------------------------|
+| 4.0.4   | PHP 8.1+                           |
 | 4.0.3   | PHP 8.1+                           |
 | 4.0.2   | PHP 8.1+                           |
 | 4.0.1   | PHP 8.1+                           |

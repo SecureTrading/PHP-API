@@ -6,6 +6,7 @@ use org\bovigo\vfs\vfsStream;
 
 class JsonFileReaderTest extends \Securetrading\Unittest\UnittestAbstract {
   private $_rootDir;
+  private $_jsonFileReader;
 
   public function setUp() : void {
     $this->_rootDir = vfsStream::setup('rootTestDirectory');

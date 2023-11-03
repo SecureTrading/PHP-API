@@ -2022,16 +2022,16 @@
         },
         {
             "name": "securetrading/unittest",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SecureTrading/PHP-Unittest.git",
-                "reference": "235ef50f8e6b6b4eaa71ab83b561e78908357c8c"
+                "reference": "2574a5db29bfba9a721ba54f3af9e137074a5d9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SecureTrading/PHP-Unittest/zipball/235ef50f8e6b6b4eaa71ab83b561e78908357c8c",
-                "reference": "235ef50f8e6b6b4eaa71ab83b561e78908357c8c",
+                "url": "https://api.github.com/repos/SecureTrading/PHP-Unittest/zipball/2574a5db29bfba9a721ba54f3af9e137074a5d9b",
+                "reference": "2574a5db29bfba9a721ba54f3af9e137074a5d9b",
                 "shasum": ""
             },
             "require": {
@@ -2051,9 +2051,9 @@
             "description": "Secure Trading's unittest package providing helper methods/classes for writing testing with PHPUnit.",
             "support": {
                 "issues": "https://github.com/SecureTrading/PHP-Unittest/issues",
-                "source": "https://github.com/SecureTrading/PHP-Unittest/tree/4.0.0"
+                "source": "https://github.com/SecureTrading/PHP-Unittest/tree/4.0.1"
             },
-            "time": "2023-10-31T14:14:25+00:00"
+            "time": "2023-11-02T13:42:05+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",

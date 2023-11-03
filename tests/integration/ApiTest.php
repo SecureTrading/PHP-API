@@ -13,6 +13,13 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 
   private $_password;
 
+  private $_ioc;
+
+  private $_correctSslCertFile;
+
+  private $_incorrectSslCertFile;
+
+
   private static $_defaultConfigArray = array( // Note - commented out config does not need to be set - just documenting all the possible config options somewhere.
     //'username' => '',
     //'password' => '',
@@ -97,7 +104,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	'customerfirstname' => 'John',
 	'customerlastname' => 'Doe',
 	'customerpremise' => '1',
-	'customerpostcode' => 'TR45 6ST',
+	'customerpostcode' => '11011',
       ),
       'SUBSCRIPTION' => array(
 	'subscriptionunit' => 'DAY',
@@ -196,7 +203,8 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
   private function _assertResponseData(array $expectedResponseData, array $actualResponseData) {
     foreach($expectedResponseData as $k => $v) {
       if (is_array($v)) {
-	call_user_func(array($this, __METHOD__), $v, $actualResponseData[$k]);
+	//call_user_func(array($this, __METHOD__), $v, $actualResponseData[$k]);
+	$this->_assertResponseData($v, $actualResponseData[$k]);
       }
       else {
 	$this->assertSame($v, $actualResponseData[$k], sprintf("Comparing values with key '%s'.", $k));
@@ -366,7 +374,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	    'billingcountryiso2a' => 'DE',
 	    'billingfirstname' => 'FIRSTNAME',
 	    'billinglastname' => 'last1',
-	    'billingpostcode' => 'TR45 6ST',
+	    'billingpostcode' => '11011',
 	    'billingpremise' => '789',
 	    'billingstreet' => 'Street',
 	    'billingtown' => 'Town',
@@ -413,7 +421,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
 	    'billingcountryiso2a' => 'DE',
 	    'billingfirstname' => 'FIRSTNAME',
 	    'billinglastname' => 'last1',
-	    'billingpostcode' => 'TR45 6ST',
+	    'billingpostcode' => '11011',
 	    'billingpremise' => '789',
 	    'billingstreet' => 'Street',
 	    'billingtown' => 'Town',
@@ -1560,7 +1568,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     foreach($expectedLines as $line) {
       $logLevel = preg_quote($line[0]);
       $logMessage = preg_quote($line[1]);
-      $regex = "!.+${logLevel}.+${logMessage}!";
+      $regex = "!.+{$logLevel}.+{$logMessage}!";
       $this->assertEquals(1, preg_match($regex, $contents), sprintf('Trying to match %s.', $regex));
     }
   }

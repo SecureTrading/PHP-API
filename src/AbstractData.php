@@ -4,6 +4,7 @@ namespace Securetrading\Stpp\JsonInterface;
 
 abstract class AbstractData extends \Securetrading\Data\Data {
   protected $_ioc;
+  protected $_log;
 
   public function __construct(\Securetrading\Ioc\IocInterface $ioc) {
     $this->_log = $ioc->getSingleton('\Securetrading\Stpp\JsonInterface\Log');
