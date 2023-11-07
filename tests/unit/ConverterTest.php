@@ -6,7 +6,7 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
   private $_converter;
   private $_stubConfig;
   private $_stubIoc;
-  private $__stubLog;
+  private $_stubLog;
 
   public function setUp() : void {
     $this->_stubConfig = $this->createMock('\Securetrading\Stpp\JsonInterface\Config');

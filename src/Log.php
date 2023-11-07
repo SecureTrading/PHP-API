@@ -24,10 +24,9 @@ class Log extends \Psr\Log\AbstractLogger {
     return $this;
   }
 
-  public function log($logLevel, $message, array $context = array()) {
+  public function log($logLevel, $message, array $context = array()): void {
     $message = $this->_formatMessage($message);
     $this->_getLogger()->log($logLevel, $message, $context);
-    return $this;
   }
 
   protected function _formatMessage($message) {

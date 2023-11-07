@@ -65,7 +65,7 @@ class LogTest extends \Securetrading\Unittest\UnittestAbstract {
     $this->_log->setRequestReference($requestReference);
 
     $returnValue = $this->_log->log($logLevel, $message, $context);
-    $this->assertSame($this->_log, $returnValue);
+    $this->assertSame(null, $returnValue);
   }
 
   public function providerLog() {

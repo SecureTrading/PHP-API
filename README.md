@@ -22,6 +22,7 @@ See examples/ in this repository for an example of how to use this API.
 
 | Version | Changes                                                                                               |
 |---------|-------------------------------------------------------------------------------------------------------|
+| 4.0.5   | PHP-Log & PHP-Http update.                                                                            |
 | 4.0.4   | Test and deprecation fixes.                                                                           |
 | 4.0.3   | PHP 8.2 compat.                                                                                       |
 | 4.0.2   | Update integration tests postcode values - gateways test logic was updated causing our tests to fail. |
@@ -35,15 +36,16 @@ See examples/ in this repository for an example of how to use this API.
 
 ## PHP Version Compatibility
 
-| Version | Changes                            |
-|---------|------------------------------------|
-| 4.0.4   | PHP 8.1+                           |
-| 4.0.3   | PHP 8.1+                           |
-| 4.0.2   | PHP 8.1+                           |
-| 4.0.1   | PHP 8.1+                           |
-| 4.0.0   | PHP 8.1+                           |
-| 3.0.0   | PHP 7.3 - 7.X, PHP 8.0.0 - 8.0.3   |
-| 2.0.0   | PHP 7.3 - PHP 7.4                  |
-| 1.0.2   | PHP 7.0 - PHP 7.2                  |
-| 1.0.1   | PHP 5.x                            |
-| 1.0.0   | PHP 5.x                            |
+| Version | Changes                          |
+|---------|----------------------------------|
+| 4.0.5   | PHP 8.1 - PHP 8.2                |
+| 4.0.4   | PHP 8.1+                         |
+| 4.0.3   | PHP 8.1+                         |
+| 4.0.2   | PHP 8.1+                         |
+| 4.0.1   | PHP 8.1+                         |
+| 4.0.0   | PHP 8.1+                         |
+| 3.0.0   | PHP 7.3 - 7.X, PHP 8.0.0 - 8.0.3 |
+| 2.0.0   | PHP 7.3 - PHP 7.4                |
+| 1.0.2   | PHP 7.0 - PHP 7.2                |
+| 1.0.1   | PHP 5.x                          |
+| 1.0.0   | PHP 5.x                          |

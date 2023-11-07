@@ -4,34 +4,34 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "83bc8f4d9d05841aa4665f2cc86f4158",
+    "content-hash": "e112a67ab6f84c8b7a851a77f73bb990",
     "packages": [
         {
             "name": "psr/log",
-            "version": "1.1.4",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "d49695b909c3b7628b6289db5479a1c204601f11"
+                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/d49695b909c3b7628b6289db5479a1c204601f11",
-                "reference": "d49695b909c3b7628b6289db5479a1c204601f11",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/fe5ea303b0887d5caefd3d431c3e61ad47037001",
+                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=8.0.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Psr\\Log\\": "Psr/Log/"
+                    "Psr\\Log\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -52,9 +52,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/1.1.4"
+                "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
-            "time": "2021-05-03T11:20:27+00:00"
+            "time": "2021-07-14T16:46:02+00:00"
         },
         {
             "name": "securetrading/data",
@@ -129,26 +129,26 @@
         },
         {
             "name": "securetrading/http",
-            "version": "3.0.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SecureTrading/PHP-Http.git",
-                "reference": "ae8d987e47784c02c19cdc16385ed6217141f56d"
+                "reference": "bc62b8e1fad06d99c434973bd31e9f4311abc6b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SecureTrading/PHP-Http/zipball/ae8d987e47784c02c19cdc16385ed6217141f56d",
-                "reference": "ae8d987e47784c02c19cdc16385ed6217141f56d",
+                "url": "https://api.github.com/repos/SecureTrading/PHP-Http/zipball/bc62b8e1fad06d99c434973bd31e9f4311abc6b5",
+                "reference": "bc62b8e1fad06d99c434973bd31e9f4311abc6b5",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.0",
-                "psr/log": "^1.1.3",
+                "php": "^8.1",
+                "psr/log": "^3.0",
                 "securetrading/exception": "^1.0.1",
                 "securetrading/ioc": "^3.0"
             },
             "require-dev": {
-                "securetrading/unittest": "^3.0.0"
+                "securetrading/unittest": "^4.0.0"
             },
             "type": "library",
             "autoload": {
@@ -163,9 +163,9 @@
             "description": "Secure Trading's HTTP package - provides a generic HTTP interface and an implementation that uses cURL.  Supports logic for retries; SSL verification; etc.",
             "support": {
                 "issues": "https://github.com/SecureTrading/PHP-Http/issues",
-                "source": "https://github.com/SecureTrading/PHP-Http/tree/3.0.0"
+                "source": "https://github.com/SecureTrading/PHP-Http/tree/4.0.0"
             },
-            "time": "2021-04-20T14:29:44+00:00"
+            "time": "2023-11-07T17:01:39+00:00"
         },
         {
             "name": "securetrading/ioc",
@@ -245,28 +245,28 @@
         },
         {
             "name": "securetrading/log",
-            "version": "3.0.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SecureTrading/PHP-Log.git",
-                "reference": "daf79d5f83b4c9e40e00dc3e15af57b5c5d11c2f"
+                "reference": "65a8041a59a9cc3e059d67fc1b7d5c55e9f60a39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SecureTrading/PHP-Log/zipball/daf79d5f83b4c9e40e00dc3e15af57b5c5d11c2f",
-                "reference": "daf79d5f83b4c9e40e00dc3e15af57b5c5d11c2f",
+                "url": "https://api.github.com/repos/SecureTrading/PHP-Log/zipball/65a8041a59a9cc3e059d67fc1b7d5c55e9f60a39",
+                "reference": "65a8041a59a9cc3e059d67fc1b7d5c55e9f60a39",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.0",
-                "psr/log": "~1.0",
+                "php": "^8.1",
+                "psr/log": "^3.0",
                 "securetrading/exception": "^1.0",
                 "securetrading/ioc": "^3.0",
                 "securetrading/loader": "^2.0"
             },
             "require-dev": {
                 "mikey179/vfsstream": "^1.6",
-                "securetrading/unittest": "^3.0"
+                "securetrading/unittest": "^4.0"
             },
             "type": "library",
             "autoload": {
@@ -281,9 +281,9 @@
             "description": "Secure Trading's Log package.",
             "support": {
                 "issues": "https://github.com/SecureTrading/PHP-Log/issues",
-                "source": "https://github.com/SecureTrading/PHP-Log/tree/3.0.0"
+                "source": "https://github.com/SecureTrading/PHP-Log/tree/4.0.0"
             },
-            "time": "2021-04-20T14:25:50+00:00"
+            "time": "2023-11-07T15:14:17+00:00"
         }
     ],
     "packages-dev": [
