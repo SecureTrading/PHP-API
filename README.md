@@ -22,7 +22,7 @@ See examples/ in this repository for an example of how to use this API.
 
 | Version | Changes                                                                                               |
 |---------|-------------------------------------------------------------------------------------------------------|
-| 4.0.5   | PHP-Log & PHP-Http update.                                                                            |
+| 4.0.6   | PHP-Log update                                                                                        |
 | 4.0.4   | Test and deprecation fixes.                                                                           |
 | 4.0.3   | PHP 8.2 compat.                                                                                       |
 | 4.0.2   | Update integration tests postcode values - gateways test logic was updated causing our tests to fail. |
@@ -38,6 +38,7 @@ See examples/ in this repository for an example of how to use this API.
 
 | Version | Changes                          |
 |---------|----------------------------------|
+| 4.0.6   | PHP 8.1 - PHP 8.2                |
 | 4.0.5   | PHP 8.1 - PHP 8.2                |
 | 4.0.4   | PHP 8.1+                         |
 | 4.0.3   | PHP 8.1+                         |
