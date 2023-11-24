@@ -1,6 +1,6 @@
 {
   "name" : "securetrading/stpp_json",
-  "version" : "4.0.5",
+  "version" : "4.0.6",
   "description" : "Secure Trading's JSON API.",
   "license" : "MIT",
   "require" : {
