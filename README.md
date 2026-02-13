@@ -5,7 +5,7 @@
 Install this library using Composer.  From the root directory of your application just run:
 
     composer require securetrading/stpp_json
-    
+
 # Documentation
 
 Please refer to https://docs.trustpayments.com/document/webservices-api/getting-started/ for full documentation.
@@ -22,6 +22,7 @@ See examples/ in this repository for an example of how to use this API.
 
 | Version | Changes                                                                                               |
 |---------|-------------------------------------------------------------------------------------------------------|
+| 4.0.7   | phpunit update                                                                                       |
 | 4.0.6   | PHP-Log update.                                                                                       |
 | 4.0.5   | PHP-Log & PHP-Http update.                                                                            |
 | 4.0.4   | Test and deprecation fixes.                                                                           |
@@ -39,6 +40,7 @@ See examples/ in this repository for an example of how to use this API.
 
 | Version | Changes                          |
 |---------|----------------------------------|
+| 4.0.7   | PHP 8.2                          |
 | 4.0.6   | PHP 8.1 - PHP 8.2                |
 | 4.0.5   | PHP 8.1 - PHP 8.2                |
 | 4.0.4   | PHP 8.1+                         |
