@@ -57,6 +57,75 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
   // Note - Api::process() not unit tested; better suited for - and well covered by - integration tests.
 
   /**
+   *
+   */
+  public function testProcess_HandlesDeprecatedConfig() {
+    $mockResponseString = 'mocked_http_response';
+    
+    $mockHttp = $this->createMock('\Securetrading\Stpp\JsonInterface\Http');  
+    $mockHttp
+	->expects($this->once())    
+	->method('send')
+	->with('json_request', 'fake_req_ref', 'default_datacenterurl/json/')
+	->willReturn($mockResponseString);
+
+    $ioc = $this->createMock('\Securetrading\Ioc\Ioc');
+    $ioc
+      ->method('getSingleton')
+      ->with($this->equalTo('\Securetrading\Stpp\JsonInterface\Log'))
+      ->willReturn($this->createMock('\Securetrading\Stpp\JsonInterface\Log'));
+
+    $mockInnerResponseObject = new \Securetrading\Stpp\JsonInterface\Response($ioc);
+    $mockInnerResponseObject->setSingle('mocked_request_key', 'mocked_request_value');    
+    $mockResponseObject = new \Securetrading\Stpp\JsonInterface\Response($ioc);
+    $mockResponseObject->set('requestreference', 'fake_req_ref');
+    $mockResponseObject->setSingle('responses', array($mockInnerResponseObject));
+    
+    $mockConverter = $this->createMock('\Securetrading\Stpp\JsonInterface\Converter');
+    $mockConverter
+	->expects($this->once())
+      	->method('decode')
+      	->with($mockResponseString)
+      	->willReturn($mockResponseObject);
+
+    $this->_stubConfig
+	->expects($this->once())
+      	->method('get')
+      	->with($this->equalTo('datacenterurl'))
+      	->willReturn('default_datacenterurl')
+    ;
+
+    $mockRequest = $this->_newRequest();
+    $mockRequest->setSingle('requestreference', 'fake_req_ref');
+
+    $mockConverter
+	->expects($this->once())
+	->method('encode')
+	->willReturn('json_request');
+	
+    $stubExceptionMapper = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\ExceptionMapper')->disableOriginalConstructor()->getMock();
+    $translatorStub = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Translator')->disableOriginalConstructor()->getMock();
+
+    $returnValueMap = array(
+      array('\Securetrading\Stpp\JsonInterface\ExceptionMapper', array(), $stubExceptionMapper),
+      array('\Securetrading\Stpp\JsonInterface\Translator', array('config' => $this->_stubConfig), $translatorStub),
+      array('\Securetrading\Stpp\JsonInterface\Http', array($this->_stubIoc, $this->_stubConfig), $mockHttp),
+      array('\Securetrading\Stpp\JsonInterface\Converter', array('config' => $this->_stubConfig, 'ioc' => $this->_stubIoc), $mockConverter),
+    );
+
+    $this->_stubIoc
+      ->expects($this->any())
+      ->method('get')
+      ->will($this->returnValueMap($returnValueMap));
+    ;
+    
+    $actualReturnValue = $this->_api->process($mockRequest);
+    
+    $this->assertEquals('fake_req_ref', $actualReturnValue->getSingle('requestreference'));
+    $this->assertEquals('mocked_request_value', $actualReturnValue->getSingle('responses')[0]->getSingle('mocked_request_key'));
+  }
+
+  /**
    * 
    */
   public function testProcess_WhenExceptionCaught_Logs() {
@@ -156,17 +225,8 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
       ->with($this->equalTo('datacenterurl'))
       ->willReturn('default_datacenterurl')
     ;
-
-    $stubRequest = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
-    $stubRequest
-      ->expects($this->once())
-      ->method('getSingle')
-      ->with($this->equalTo('datacenterurl'), $this->equalTo('default_datacenterurl'))
-      ->willReturn('url/')
-    ;
-
-    $returnValue = $this->_($this->_api, '_getUrl', $stubRequest);
-    $this->assertEquals('url/json/', $returnValue);
+    $returnValue = $this->_($this->_api, '_getUrl');
+    $this->assertEquals('default_datacenterurl/json/', $returnValue);
   }
 
   /**

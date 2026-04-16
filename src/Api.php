@@ -25,9 +25,8 @@ class Api {
       $this->_getLog()->info("Starting request.");
 
       $jsonRequestString = $converter->encode($request);
-      $httpResponseString = $httpClient->send($jsonRequestString, $requestReference, $this->_getUrl($request));
+      $httpResponseString = $httpClient->send($jsonRequestString, $requestReference, $this->_getUrl());
       $responseObject = $converter->decode($httpResponseString);
-      
       $this->_verifyResult($responseObject, $requestReference);
     }
     catch (\Exception $e) {
@@ -58,8 +57,8 @@ class Api {
     return $request;
   }
 
-  protected function _getUrl(AbstractRequest $request) {
-    $url = $request->getSingle('datacenterurl', $this->_config->get('datacenterurl'));
+  protected function _getUrl() {
+    $url = $this->_config->get('datacenterurl');
     return rtrim($url, '/') . "/json/";
   }
 

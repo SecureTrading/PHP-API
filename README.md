@@ -22,6 +22,7 @@ See examples/ in this repository for an example of how to use this API.
 
 | Version | Changes                                                                                               |
 |---------|-------------------------------------------------------------------------------------------------------|
+| 4.0.8   | Removed deprecated and unused functionality.                                                                                       |
 | 4.0.7   | phpunit update                                                                                       |
 | 4.0.6   | PHP-Log update.                                                                                       |
 | 4.0.5   | PHP-Log & PHP-Http update.                                                                            |
@@ -40,6 +41,7 @@ See examples/ in this repository for an example of how to use this API.
 
 | Version | Changes                          |
 |---------|----------------------------------|
+| 4.0.8   | PHP 8.2                          |
 | 4.0.7   | PHP 8.2                          |
 | 4.0.6   | PHP 8.1 - PHP 8.2                |
 | 4.0.5   | PHP 8.1 - PHP 8.2                |

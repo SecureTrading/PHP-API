@@ -67,7 +67,7 @@ class HttpTest extends \Securetrading\Unittest\UnittestAbstract {
       return (
         $inputArg === $expectedIocParams
 	&& $log === 'stub_log'
-        && preg_match('/^VERSIONINFO: PHP::.+::1.0.0::.+$/', $versionInfoHeader)
+        && preg_match('/^VERSIONINFO: PHP::.+::2.0.0::.+$/', $versionInfoHeader)
         && preg_match('/^PHP-.+$/', $userAgent)
       );
     };

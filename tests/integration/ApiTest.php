@@ -248,6 +248,16 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     $this->_assertResponseData($expectedResponseData, $actualResponseData);
   }
 
+  /**
+   * @dataProvider providerAuth
+   */
+  public function testAuth_HandlesDeprecatedConfig($auth) {
+    list($configData, $requestData, $expectedResponseData) = $auth;
+    $requestData['cachetoken'] = base64_encode(json_encode(array('datacenterurl' => 'https://localhost:9', 'cachetoken' => "")));
+    $actualResponseData = $this->_processRequest($configData, $requestData);
+    $this->_assertResponseData($expectedResponseData, $actualResponseData);
+  }
+
   public function providerAuth() {
     $this->_addDataSet(
       array(
@@ -459,7 +469,7 @@ class ApiTest extends \Securetrading\Unittest\IntegrationtestAbstract {
     $actualResponseData = $this->_processRequest($configData, $requestData);
     $this->_assertResponseData($expectedResponseData, $actualResponseData);
   }
-
+  
   public function providerAuth_FromToken() {
     $this->_addDataSet(
       array(

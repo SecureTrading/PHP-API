@@ -44,7 +44,7 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
     $this->_addDataSet(
       $configMap,
       $dummyRequest, 
-      '{"alias":"username","version":"json_version","request":[{"a":"b"}],"libraryversion":"php_1.0.0"}'
+      '{"alias":"username","version":"json_version","request":[{"a":"b"}],"libraryversion":"php_2.0.0"}'
     );
 
     $configMap = array(
@@ -60,7 +60,7 @@ class ConverterTest extends \Securetrading\Unittest\UnittestAbstract {
     $this->_addDataSet(
       $configMap,
       $dummyRequests,
-      '{"alias":"username2","version":"json_version2","request":[{"a":"b"},{"c":"d"}],"libraryversion":"php_1.0.0"}'
+      '{"alias":"username2","version":"json_version2","request":[{"a":"b"},{"c":"d"}],"libraryversion":"php_2.0.0"}'
     );
 
     // Note - The Python library has additional test cases for: multiple requests in one Request object.  Single request in a Requests object.  The PHP library doesn't need them becaus of slightly different source and test logic.
