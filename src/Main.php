@@ -3,7 +3,7 @@
 namespace Securetrading\Stpp\JsonInterface;
 
 class Main {
-  const FULL_VERSION = "1.0.0";
+  const FULL_VERSION = "2.0.0";
 
   public static function bootstrapIoc() {
     $ioc = \Securetrading\Ioc\Helper::instance()

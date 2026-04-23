@@ -149,24 +149,15 @@ class ApiTest extends \Securetrading\Unittest\UnittestAbstract {
   /**
    *
    */
-  public function test_getUrl() {
+   public function test_getUrl() {
     $this->_stubConfig
       ->expects($this->once())
       ->method('get')
       ->with($this->equalTo('datacenterurl'))
       ->willReturn('default_datacenterurl')
     ;
-
-    $stubRequest = $this->getMockBuilder('\Securetrading\Stpp\JsonInterface\Request')->disableOriginalConstructor()->getMock();
-    $stubRequest
-      ->expects($this->once())
-      ->method('getSingle')
-      ->with($this->equalTo('datacenterurl'), $this->equalTo('default_datacenterurl'))
-      ->willReturn('url/')
-    ;
-
-    $returnValue = $this->_($this->_api, '_getUrl', $stubRequest);
-    $this->assertEquals('url/json/', $returnValue);
+    $returnValue = $this->_($this->_api, '_getUrl');
+    $this->assertEquals('default_datacenterurl/json/', $returnValue);
   }
 
   /**
