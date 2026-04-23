@@ -58,8 +58,8 @@ class Api {
     return $request;
   }
 
-  protected function _getUrl(AbstractRequest $request) {
-    $url = $request->getSingle('datacenterurl', $this->_config->get('datacenterurl'));
+  protected function _getUrl() {
+    $url = $this->_config->get('datacenterurl');
     return rtrim($url, '/') . "/json/";
   }
 
